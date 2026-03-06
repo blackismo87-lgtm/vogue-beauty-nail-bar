@@ -1,13 +1,70 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import { ChevronLeft, ChevronRight, Calendar as CalIcon, Clock } from 'lucide-react';
+import { insforge } from '../lib/insforge';
 
 export default function BookingPage() {
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null);
+    const [loadingAuth, setLoadingAuth] = useState(true);
+
+    // Form state
     const [step, setStep] = useState(1);
     const [selectedService, setSelectedService] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
+
+    // Booking submission state
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(false);
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const { data } = await insforge.auth.getCurrentSession();
+            if (data?.session?.user) {
+                setUser(data.session.user);
+            }
+            setLoadingAuth(false);
+        };
+        checkUser();
+    }, []);
+
+    const handleConfirmBooking = async () => {
+        if (!user) {
+            // Redirect to login if unauthenticated
+            navigate('/register');
+            return;
+        }
+
+        setIsSubmitting(true);
+        setError(null);
+
+        try {
+            const { error: dbError } = await insforge.database
+                .from('appointments')
+                .insert([
+                    {
+                        user_email: user.email,
+                        user_name: user.profile?.name || 'Client',
+                        service_name: selectedService.name,
+                        service_price: selectedService.price,
+                        appointment_date: `2026-11-${selectedDate.toString().padStart(2, '0')}`,
+                        appointment_time: selectedTime,
+                        status: 'confirmed'
+                    }
+                ]);
+
+            if (dbError) throw dbError;
+
+            setSuccess(true);
+        } catch (err) {
+            setError(err.message || "Erreur lors de la réservation.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     const services = [
         { id: 1, name: 'Manucure Classique', price: '45€', duration: '45 min' },
@@ -123,7 +180,7 @@ export default function BookingPage() {
                                         border: `1px solid ${selectedTime === time ? 'var(--color-vogue-red)' : 'var(--border-color)'}`,
                                         borderRadius: '8px',
                                         cursor: 'pointer',
-                                        backgroundColor: selectedTime === time ? 'var(--color-vogue-pink)' : 'transparent',
+                                        backgroundColor: selectedTime === time ? 'var(--color-vogue-red)' : 'transparent',
                                         color: selectedTime === time ? 'var(--color-white)' : 'inherit',
                                         fontWeight: 600
                                     }}
@@ -135,7 +192,14 @@ export default function BookingPage() {
                             className="btn btn-primary"
                             style={{ width: '100%', opacity: (selectedDate && selectedTime) ? 1 : 0.5 }}
                             disabled={!(selectedDate && selectedTime)}
-                            onClick={() => setStep(3)}
+                            onClick={() => {
+                                if (!user) {
+                                    alert('Veuillez vous connecter pour continuer.');
+                                    navigate('/register');
+                                } else {
+                                    setStep(3);
+                                }
+                            }}
                         >
                             Voir le Récapitulatif
                         </button>
@@ -164,16 +228,33 @@ export default function BookingPage() {
                             </div>
                         </div>
 
-                        <button
-                            className="btn btn-primary"
-                            style={{ width: '100%' }}
-                            onClick={() => alert('Réservation envoyée !')}
-                        >
-                            Confirmer la Réservation
-                        </button>
-                        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-                            <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}>Annuler</Link>
-                        </div>
+                        {error && (
+                            <div style={{ padding: '1rem', marginBottom: '1.5rem', backgroundColor: '#ffebee', color: 'var(--color-vogue-red)', border: '1px solid var(--color-vogue-red)', borderRadius: '4px', fontSize: '0.9rem' }}>
+                                {error}
+                            </div>
+                        )}
+
+                        {success ? (
+                            <div style={{ textAlign: 'center', padding: '2rem', backgroundColor: '#e8f5e9', border: '1px solid #4caf50', borderRadius: '12px' }}>
+                                <h3 style={{ color: '#2e7d32', marginBottom: '1rem', fontSize: '1.5rem', fontFamily: 'var(--font-serif)' }}>Rendez-vous Confirmé !</h3>
+                                <p style={{ color: 'var(--text-secondary)' }}>Un email de confirmation a été envoyé à {user?.email}.</p>
+                                <button className="btn btn-primary" style={{ marginTop: '2rem' }} onClick={() => navigate('/')}>Retour à l'accueil</button>
+                            </div>
+                        ) : (
+                            <>
+                                <button
+                                    className="btn btn-primary"
+                                    style={{ width: '100%', opacity: isSubmitting ? 0.7 : 1 }}
+                                    onClick={handleConfirmBooking}
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? 'Confirmation en cours...' : 'Confirmer la Réservation'}
+                                </button>
+                                <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                                    <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}>Annuler</Link>
+                                </div>
+                            </>
+                        )}
                     </div>
                 )}
 
