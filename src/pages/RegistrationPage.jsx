@@ -77,9 +77,9 @@ export default function RegistrationPage() {
         <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
             <Navigation />
 
-            <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem 1.5rem' }}>
+            <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem' }}>
 
-                <div style={{ width: '100%', maxWidth: '400px' }}>
+                <div className="vogue-card" style={{ width: '100%', maxWidth: '450px', padding: '3rem 2.5rem' }}>
 
                     {/* Logo / Title */}
                     <div style={{ textAlign: 'center', marginBottom: '3rem' }}>

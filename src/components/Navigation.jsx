@@ -27,14 +27,18 @@ export default function Navigation() {
   };
 
   return (
-    <nav style={{
+    <nav className="glass-panel" style={{
+      position: 'sticky',
+      top: 0,
+      zIndex: 100,
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      padding: '1.5rem 2rem',
+      padding: '1.2rem 2.5rem',
       backgroundColor: 'var(--nav-bg)',
+      color: 'var(--text-primary)',
+      border: 'none',
       borderBottom: '1px solid var(--border-color)',
-      color: 'var(--text-primary)'
     }}>
       <div style={{
         fontFamily: 'var(--font-serif)',
@@ -71,21 +75,17 @@ export default function Navigation() {
 
         {/* Dropdown Menu */}
         {showMenu && (
-          <div style={{
+          <div className="glass-panel" style={{
             position: 'absolute',
             top: '100%',
             right: 0,
-            marginTop: '1rem',
-            backgroundColor: 'var(--bg-secondary)',
-            border: '1px solid var(--border-color)',
-            borderRadius: '8px',
-            padding: '0.5rem',
-            minWidth: '200px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            zIndex: 50,
+            marginTop: '1.5rem',
+            padding: '0.75rem',
+            minWidth: '220px',
+            borderRadius: '12px',
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.5rem'
+            gap: '0.25rem'
           }}>
             <Link to="/booking" style={{ textDecoration: 'none', color: 'var(--text-primary)', padding: '0.75rem 1rem', display: 'block', borderRadius: '4px' }}>
               Nouveau Réservation

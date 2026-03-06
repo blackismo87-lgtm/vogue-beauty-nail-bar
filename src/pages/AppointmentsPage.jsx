@@ -50,7 +50,7 @@ export default function AppointmentsPage() {
                 {loading ? (
                     <div style={{ textAlign: 'center', padding: '3rem' }}>Chargement de vos réservations...</div>
                 ) : appointments.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '4rem 2rem', backgroundColor: 'var(--bg-secondary)', borderRadius: '12px' }}>
+                    <div className="vogue-card" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
                         <Calendar size={48} color="var(--text-secondary)" style={{ marginBottom: '1rem' }} />
                         <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Aucun rendez-vous</h3>
                         <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Vous n'avez pas encore réservé de prestation.</p>
@@ -61,11 +61,8 @@ export default function AppointmentsPage() {
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                         {appointments.map((apt) => (
-                            <div key={apt.id} style={{
-                                padding: '2rem',
-                                backgroundColor: 'var(--bg-secondary)',
-                                border: '1px solid var(--border-color)',
-                                borderRadius: '12px',
+                            <div key={apt.id} className="vogue-card" style={{
+                                padding: '2.5rem',
                                 position: 'relative',
                                 overflow: 'hidden'
                             }}>

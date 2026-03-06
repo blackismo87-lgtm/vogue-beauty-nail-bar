@@ -112,16 +112,15 @@ export default function BookingPage() {
                             {services.map(s => (
                                 <div
                                     key={s.id}
+                                    className="vogue-card"
                                     onClick={() => setSelectedService(s)}
                                     style={{
                                         padding: '1.5rem',
-                                        border: `1px solid ${selectedService?.id === s.id ? 'var(--color-vogue-red)' : 'var(--border-color)'}`,
-                                        borderRadius: '8px',
+                                        borderColor: selectedService?.id === s.id ? 'var(--color-vogue-red)' : 'var(--border-color)',
                                         display: 'flex',
                                         justifyContent: 'space-between',
                                         alignItems: 'center',
                                         cursor: 'pointer',
-                                        transition: 'border-color 0.2s'
                                     }}
                                 >
                                     <div>
@@ -152,7 +151,7 @@ export default function BookingPage() {
                         <h2 style={{ fontSize: '1.8rem', marginBottom: '2rem', fontFamily: 'var(--font-serif)' }}>Sélectionnez une Date</h2>
 
                         {/* Dynamic Calendar */}
-                        <div style={{ border: '1px solid var(--border-color)', borderRadius: '12px', padding: '1.5rem', marginBottom: '2rem' }}>
+                        <div className="vogue-card" style={{ padding: '2rem', marginBottom: '2.5rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                                 <ChevronLeft size={20} color="#ccc" style={{ cursor: 'not-allowed' }} />
                                 <span style={{ fontWeight: 600 }}>{currentMonthLabel}</span>
@@ -241,7 +240,7 @@ export default function BookingPage() {
                         </div>
                         <h2 style={{ fontSize: '1.8rem', marginBottom: '2rem', fontFamily: 'var(--font-serif)' }}>Confirmation</h2>
 
-                        <div style={{ backgroundColor: 'var(--bg-secondary)', padding: '2rem', borderRadius: '12px', marginBottom: '3rem' }}>
+                        <div className="vogue-card" style={{ padding: '2.5rem', marginBottom: '3rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
                                 <span style={{ color: 'var(--text-secondary)' }}>Service</span>
                                 <span style={{ fontWeight: 600 }}>{selectedService?.name}</span>
@@ -265,7 +264,7 @@ export default function BookingPage() {
                         )}
 
                         {success ? (
-                            <div style={{ textAlign: 'center', padding: '2rem', backgroundColor: '#e8f5e9', border: '1px solid #4caf50', borderRadius: '12px' }}>
+                            <div className="vogue-card" style={{ textAlign: 'center', padding: '3rem 2rem', border: '1px solid #4caf50' }}>
                                 <h3 style={{ color: '#2e7d32', marginBottom: '1rem', fontSize: '1.5rem', fontFamily: 'var(--font-serif)' }}>Rendez-vous Confirmé !</h3>
                                 <p style={{ color: 'var(--text-secondary)' }}>Un email de confirmation a été envoyé à {user?.email}.</p>
                                 <button className="btn btn-primary" style={{ marginTop: '2rem' }} onClick={() => navigate('/')}>Retour à l'accueil</button>

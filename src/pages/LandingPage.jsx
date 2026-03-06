@@ -10,12 +10,13 @@ export default function LandingPage() {
             {/* Hero Section */}
             <section style={{
                 flexGrow: 1,
+                minHeight: '85vh',
                 backgroundColor: 'var(--color-black)',
                 color: 'var(--color-white)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                padding: '3rem 2rem',
+                padding: '4rem 2rem',
                 position: 'relative',
                 overflow: 'hidden'
             }}>
@@ -23,31 +24,33 @@ export default function LandingPage() {
                 <div style={{
                     position: 'absolute',
                     top: 0, right: 0, bottom: 0, left: 0,
-                    backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.8)), url("https://images.unsplash.com/photo-1522337660859-02fbefca4702?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80")',
+                    backgroundImage: 'var(--gradient-dark), url("https://images.unsplash.com/photo-1522337660859-02fbefca4702?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80")',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    opacity: 0.5,
+                    opacity: 0.85,
                     zIndex: 0
                 }}></div>
 
-                <div style={{ position: 'relative', zIndex: 1, maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+                <div style={{ position: 'relative', zIndex: 1, maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
                     <h1 style={{
-                        fontSize: '3.5rem',
-                        lineHeight: 1.1,
+                        fontSize: 'clamp(3.5rem, 8vw, 6rem)',
+                        lineHeight: 1.05,
                         marginBottom: '1.5rem',
-                        letterSpacing: '2px'
+                        letterSpacing: '2px',
+                        textShadow: '0 4px 20px rgba(0,0,0,0.6)'
                     }}>Vogue Beauty<br />Nail Bar</h1>
                     <p style={{
                         fontFamily: 'var(--font-sans)',
-                        fontSize: '1.1rem',
-                        marginBottom: '3rem',
+                        fontSize: 'clamp(1.1rem, 3vw, 1.4rem)',
+                        marginBottom: '3.5rem',
                         opacity: 0.9,
-                        fontWeight: 300
+                        fontWeight: 300,
+                        textShadow: '0 2px 10px rgba(0,0,0,0.5)'
                     }}>
                         L'élégance à fleur de peau.<br />Découvrez nos soins sur-mesure.
                     </p>
 
-                    <Link to="/booking" className="btn btn-primary" style={{ width: '100%', maxWidth: '300px' }}>
+                    <Link to="/booking" className="btn btn-primary" style={{ width: '100%', maxWidth: '300px', padding: '1.2rem 2.5rem', fontSize: '1.05rem' }}>
                         Prendre Rendez-vous
                     </Link>
                 </div>
@@ -63,18 +66,11 @@ export default function LandingPage() {
                         { title: 'Soins du Corps', desc: 'Gommages et enveloppements pour une peau soyeuse.' },
                         { title: 'Massages Relaxants', desc: 'Détente absolue avec huiles essentielles premium.' }
                     ].map((service, i) => (
-                        <div key={i} style={{
+                        <div key={i} className="vogue-card" style={{
                             display: 'flex',
-                            padding: '2rem',
-                            border: '1px solid var(--border-color)',
-                            backgroundColor: 'var(--bg-secondary)',
-                            borderRadius: '12px',
-                            transition: 'transform 0.3s ease',
+                            padding: '2.5rem',
                             cursor: 'pointer'
-                        }}
-                            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                        >
+                        }}>
                             <div style={{
                                 width: '4px',
                                 backgroundColor: 'var(--color-vogue-red)',
