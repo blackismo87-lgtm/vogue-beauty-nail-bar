@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import BookingPage from './pages/BookingPage';
 import RegistrationPage from './pages/RegistrationPage';
+import AppointmentsPage from './pages/AppointmentsPage';
 import { ThemeProvider } from './components/ThemeContext';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/booking" element={<BookingPage />} />
           <Route path="/registration" element={<RegistrationPage />} />
+          <Route path="/appointments" element={<AppointmentsPage />} />
         </Routes>
       </Router>
     </ThemeProvider>

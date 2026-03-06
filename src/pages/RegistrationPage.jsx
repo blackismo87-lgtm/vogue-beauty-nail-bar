@@ -6,6 +6,7 @@ import { insforge } from '../lib/insforge';
 export default function RegistrationPage() {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
+    const [isVerifying, setIsVerifying] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [successMsg, setSuccessMsg] = useState('');
@@ -15,6 +16,7 @@ export default function RegistrationPage() {
     const [password, setPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [verificationCode, setVerificationCode] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,7 +25,18 @@ export default function RegistrationPage() {
         setLoading(true);
 
         try {
-            if (isLogin) {
+            if (isVerifying) {
+                const { data, error: verifyError } = await insforge.auth.verifyEmail({
+                    email,
+                    otp: verificationCode
+                });
+
+                if (verifyError) throw verifyError;
+
+                if (data?.accessToken) {
+                    navigate('/booking');
+                }
+            } else if (isLogin) {
                 const { data, error: signInError } = await insforge.auth.signInWithPassword({
                     email,
                     password
@@ -31,7 +44,7 @@ export default function RegistrationPage() {
 
                 if (signInError) throw signInError;
 
-                if (data?.session) {
+                if (data?.accessToken) {
                     navigate('/booking');
                 }
             } else {
@@ -44,8 +57,12 @@ export default function RegistrationPage() {
                 if (signUpError) throw signUpError;
 
                 if (data?.requireEmailVerification) {
-                    setSuccessMsg('Veuillez vérifier votre boîte de réception pour valider votre compte.');
-                } else if (data?.session) {
+                    setIsVerifying(true);
+                    setSuccessMsg('Un code a été envoyé à votre adresse e-mail. Veuillez le saisir ci-dessous.');
+                } else if (data?.accessToken) {
+                    navigate('/booking');
+                } else {
+                    // Fallback
                     navigate('/booking');
                 }
             }
@@ -105,24 +122,40 @@ export default function RegistrationPage() {
                             </div>
                         )}
 
-                        {!isLogin && (
+                        {!isVerifying && !isLogin && (
                             <>
                                 <input type="text" placeholder="Prénom" className="input-field" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
                                 <input type="text" placeholder="Nom de famille" className="input-field" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
                             </>
                         )}
 
-                        <input type="email" placeholder="Adresse e-mail" className="input-field" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                        <input type="password" placeholder="Mot de passe" className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        {!isVerifying && (
+                            <>
+                                <input type="email" placeholder="Adresse e-mail" className="input-field" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                                <input type="password" placeholder="Mot de passe" className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                            </>
+                        )}
 
-                        {isLogin && (
+                        {isVerifying && (
+                            <input
+                                type="text"
+                                placeholder="Code à 6 chiffres"
+                                className="input-field"
+                                value={verificationCode}
+                                onChange={(e) => setVerificationCode(e.target.value)}
+                                required
+                                maxLength={6}
+                            />
+                        )}
+
+                        {isLogin && !isVerifying && (
                             <div style={{ textAlign: 'right', marginTop: '-0.5rem' }}>
                                 <a href="#" style={{ color: 'var(--color-vogue-red)', fontSize: '0.9rem' }}>Mot de passe oublié ?</a>
                             </div>
                         )}
 
                         <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '1.2rem', marginTop: '1rem', opacity: loading ? 0.7 : 1 }} disabled={loading}>
-                            {loading ? 'Chargement...' : (isLogin ? 'Se connecter' : 'Créer un compte')}
+                            {loading ? 'Chargement...' : (isVerifying ? 'Vérifier le code' : (isLogin ? 'Se connecter' : 'Créer un compte'))}
                         </button>
                     </form>
 
