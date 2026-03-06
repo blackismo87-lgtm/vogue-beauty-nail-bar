@@ -1,34 +1,39 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
+import heroImg from '../assets/images/hero.png';
+import manicureImg from '../assets/images/manicure.png';
+import pedicureImg from '../assets/images/pedicure.png';
+import facialImg from '../assets/images/facial.png';
+import massageImg from '../assets/images/massage.png';
 
 const SERVICES = [
     {
         id: 1,
         title: 'Manucure Vogue',
         description: "Soin complet des mains et pose de vernis.",
-        icon: 'spa',
+        image: manicureImg,
         price: '45€'
     },
     {
         id: 2,
         title: 'Pédicure Royale',
         description: "Beauté des pieds et massage relaxant.",
-        icon: 'content_cut',
+        image: pedicureImg,
         price: '55€'
     },
     {
         id: 3,
         title: 'Soin Visage',
         description: "Éclat instantané et hydratation profonde.",
-        icon: 'face',
+        image: facialImg,
         price: '75€'
     },
     {
         id: 4,
         title: 'Massage Zen',
         description: "Une évasion sensorielle totale.",
-        icon: 'physical_therapy',
+        image: massageImg,
         price: '90€'
     },
 ];
@@ -48,7 +53,7 @@ export default function LandingPage() {
                         inset: 0,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
-                        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.8)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuCg3Wi7fgmHkxW490aUWkzZZLpbJFtmPHUawGb3t3W_CCSnL38EaRDGJqWBt95KVPWE-TK9308ihw97XOqdCRAbyjpq_gl_DU83yGK3-Hk4Ahtjq9jxLsfA8xzxRyr1sqoh7t93MRfBv0T_5cGzmHt1sCwqfRU15cwJBEqjimQwyyWAvMrC_valccZIPbgvWP4CXuSI8Ckcf4wqHV-f85uu2Xut-v8bLVP2J3YZ94aGdLvCsLm13GrRgxqMabgXBkOXXA_Pg3_vasI')`
+                        backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.8)), url(${heroImg})`
                     }}></div>
 
                     <div style={{
@@ -85,13 +90,17 @@ export default function LandingPage() {
 
                     <div className="responsive-grid">
                         {SERVICES.map((service) => (
-                            <div key={service.id} className="vogue-card" style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-primary)' }}>{service.icon}</span>
-                                    <span style={{ fontWeight: 800, fontSize: '1.25rem' }}>{service.price}</span>
+                            <div key={service.id} className="vogue-card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                                <div style={{ height: '200px', width: '100%', overflow: 'hidden' }}>
+                                    <img src={service.image} alt={service.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 </div>
-                                <h3 style={{ fontSize: '1.25rem', marginTop: '0.5rem', fontStyle: 'normal' }}>{service.title}</h3>
-                                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{service.description}</p>
+                                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <h3 style={{ fontSize: '1.125rem', fontStyle: 'normal', margin: 0 }}>{service.title}</h3>
+                                        <span style={{ fontWeight: 800, fontSize: '1.125rem', color: 'var(--color-primary)' }}>{service.price}</span>
+                                    </div>
+                                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>{service.description}</p>
+                                </div>
                             </div>
                         ))}
                     </div>

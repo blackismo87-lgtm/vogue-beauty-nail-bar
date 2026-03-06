@@ -2,12 +2,16 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import { insforge } from '../lib/insforge';
+import manicureImg from '../assets/images/manicure.png';
+import pedicureImg from '../assets/images/pedicure.png';
+import facialImg from '../assets/images/facial.png';
+import massageImg from '../assets/images/massage.png';
 
 const SERVICES = [
-    { id: 1, name: 'Manucure & Pédicure Royale', price: 85, duration: '90 min', icon: 'fluid_med' },
-    { id: 2, name: 'Soin Visage Éclat Pur', price: 65, duration: '60 min', icon: 'spa' },
-    { id: 3, name: 'Massage Signature Vogue', price: 120, duration: '75 min', icon: 'self_care' },
-    { id: 4, name: 'Pose de Vernis Semi-Permanent', price: 45, duration: '45 min', icon: 'colors' }
+    { id: 1, name: 'Manucure & Pédicure Royale', price: 85, duration: '90 min', image: pedicureImg },
+    { id: 2, name: 'Soin Visage Éclat Pur', price: 65, duration: '60 min', image: facialImg },
+    { id: 3, name: 'Massage Signature Vogue', price: 120, duration: '75 min', image: massageImg },
+    { id: 4, name: 'Pose de Vernis Semi-Permanent', price: 45, duration: '45 min', image: manicureImg }
 ];
 
 const TIME_SLOTS = [
@@ -174,9 +178,9 @@ export default function BookingPage() {
                                             transition: 'all 0.2s ease'
                                         }}
                                     >
-                                        <span className="material-symbols-outlined" style={{ fontSize: '2rem', color: selectedService?.id === s.id ? 'var(--color-primary)' : 'var(--text-muted)' }}>
-                                            {s.icon}
-                                        </span>
+                                        <div style={{ width: '80px', height: '80px', borderRadius: '0.75rem', overflow: 'hidden', flexShrink: 0 }}>
+                                            <img src={s.image} alt={s.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        </div>
                                         <div style={{ flex: 1 }}>
                                             <h3 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>{s.name}</h3>
                                             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{s.duration}</p>
