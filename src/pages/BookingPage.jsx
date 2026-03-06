@@ -20,6 +20,22 @@ export default function BookingPage() {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
 
+    // Generate upcoming dates dynamically
+    const upcomingDates = React.useMemo(() => {
+        const dates = [];
+        const today = new Date();
+        for (let i = 0; i < 6; i++) {
+            const d = new Date(today);
+            d.setDate(today.getDate() + i);
+            dates.push(d);
+        }
+        return dates;
+    }, []);
+
+    const currentMonthLabel = upcomingDates.length > 0
+        ? upcomingDates[0].toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase())
+        : '';
+
     useEffect(() => {
         const checkUser = async () => {
             const { data } = await insforge.auth.getCurrentSession();
@@ -50,7 +66,7 @@ export default function BookingPage() {
                         user_name: user.profile?.name || 'Client',
                         service_name: selectedService.name,
                         service_price: selectedService.price,
-                        appointment_date: `2026-11-${selectedDate.toString().padStart(2, '0')}`,
+                        appointment_date: selectedDate, // dynamically set to 'YYYY-MM-DD'
                         appointment_time: selectedTime,
                         status: 'confirmed'
                     }
@@ -135,36 +151,48 @@ export default function BookingPage() {
                         </div>
                         <h2 style={{ fontSize: '1.8rem', marginBottom: '2rem', fontFamily: 'var(--font-serif)' }}>Sélectionnez une Date</h2>
 
-                        {/* Fake Calendar */}
+                        {/* Dynamic Calendar */}
                         <div style={{ border: '1px solid var(--border-color)', borderRadius: '12px', padding: '1.5rem', marginBottom: '2rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                                <ChevronLeft size={20} color="#ccc" />
-                                <span style={{ fontWeight: 600 }}>Novembre 2026</span>
-                                <ChevronRight size={20} />
+                                <ChevronLeft size={20} color="#ccc" style={{ cursor: 'not-allowed' }} />
+                                <span style={{ fontWeight: 600 }}>{currentMonthLabel}</span>
+                                <ChevronRight size={20} color="#ccc" style={{ cursor: 'not-allowed' }} />
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '0.5rem', textAlign: 'center', marginBottom: '1rem' }}>
-                                {days.map(d => <div key={d} style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>{d}</div>)}
-                            </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '0.5rem', textAlign: 'center' }}>
-                                {[12, 13, 14, 15, 16, 17].map((date, idx) => (
-                                    <div
-                                        key={idx}
-                                        onClick={() => setSelectedDate(date)}
-                                        style={{
-                                            aspectRatio: '1',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            borderRadius: '50%',
-                                            cursor: 'pointer',
-                                            backgroundColor: selectedDate === date ? 'var(--color-vogue-red)' : 'transparent',
-                                            color: selectedDate === date ? 'var(--color-white)' : 'var(--text-primary)',
-                                            fontWeight: selectedDate === date ? 600 : 400
-                                        }}
-                                    >
-                                        {date}
+                                {upcomingDates.map((dateObj, idx) => (
+                                    <div key={`day-${idx}`} style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'capitalize' }}>
+                                        {dateObj.toLocaleDateString('fr-FR', { weekday: 'short' }).replace('.', '')}
                                     </div>
                                 ))}
+                            </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '0.5rem', textAlign: 'center' }}>
+                                {upcomingDates.map((dateObj, idx) => {
+                                    const year = dateObj.getFullYear();
+                                    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+                                    const day = String(dateObj.getDate()).padStart(2, '0');
+                                    const dateStr = `${year}-${month}-${day}`;
+
+                                    const isSelected = selectedDate === dateStr;
+                                    return (
+                                        <div
+                                            key={`date-${idx}`}
+                                            onClick={() => setSelectedDate(dateStr)}
+                                            style={{
+                                                aspectRatio: '1',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                borderRadius: '50%',
+                                                cursor: 'pointer',
+                                                backgroundColor: isSelected ? 'var(--color-vogue-red)' : 'transparent',
+                                                color: isSelected ? 'var(--color-white)' : 'var(--text-primary)',
+                                                fontWeight: isSelected ? 600 : 400
+                                            }}
+                                        >
+                                            {dateObj.getDate()}
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
 
@@ -220,7 +248,9 @@ export default function BookingPage() {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
                                 <span style={{ color: 'var(--text-secondary)' }}>Date</span>
-                                <span style={{ fontWeight: 600 }}>Jeudi {selectedDate} Nov 2026 à {selectedTime}</span>
+                                <span style={{ fontWeight: 600 }}>
+                                    {selectedDate ? new Date(selectedDate + 'T00:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }) : ''} à {selectedTime}
+                                </span>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem' }}>
                                 <span style={{ fontWeight: 700 }}>Total</span>
