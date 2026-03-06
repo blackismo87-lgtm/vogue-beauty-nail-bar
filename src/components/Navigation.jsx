@@ -87,65 +87,71 @@ export default function Navigation() {
       <nav style={{
         position: 'fixed',
         bottom: 0,
-        left: 'calc(50% - 215px)', /* Half of 430px container max-width */
-        width: '100%',
-        maxWidth: '430px',
+        left: 0,
+        right: 0,
         backgroundColor: 'var(--bg-card)',
         borderTop: '1px solid var(--border-color)',
-        padding: '0.5rem 1rem 2rem', /* Extra bottom padding for iOS-like feel */
+        padding: '0.5rem 1rem 2rem',
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
         zIndex: 50
       }}>
-        <div style={{ display: 'none' }}>{/* Hidden helper for mobile styling */}</div>
-        <Link to="/" style={{
+        <div style={{
           display: 'flex',
-          flexDirection: 'column',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          gap: '4px',
-          color: isActive('/') ? 'var(--color-primary)' : 'var(--text-muted)',
-          flex: 1
+          width: '100%',
+          maxWidth: '500px'
         }}>
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/') ? "'FILL' 1" : "'FILL' 0" }}>home</span>
-          <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Accueil</span>
-        </Link>
+          <Link to="/" style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '4px',
+            color: isActive('/') ? 'var(--color-primary)' : 'var(--text-muted)',
+            flex: 1
+          }}>
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/') ? "'FILL' 1" : "'FILL' 0" }}>home</span>
+            <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Accueil</span>
+          </Link>
 
-        <Link to="/booking" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '4px',
-          color: isActive('/booking') ? 'var(--color-primary)' : 'var(--text-muted)',
-          flex: 1
-        }}>
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/booking') ? "'FILL' 1" : "'FILL' 0" }}>calendar_today</span>
-          <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Réserver</span>
-        </Link>
+          <Link to="/booking" style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '4px',
+            color: isActive('/booking') ? 'var(--color-primary)' : 'var(--text-muted)',
+            flex: 1
+          }}>
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/booking') ? "'FILL' 1" : "'FILL' 0" }}>calendar_today</span>
+            <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Réserver</span>
+          </Link>
 
-        <Link to="/appointments" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '4px',
-          color: isActive('/appointments') ? 'var(--color-primary)' : 'var(--text-muted)',
-          flex: 1
-        }}>
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/appointments') ? "'FILL' 1" : "'FILL' 0" }}>schedule</span>
-          <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Mes RDV</span>
-        </Link>
+          <Link to="/appointments" style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '4px',
+            color: isActive('/appointments') ? 'var(--color-primary)' : 'var(--text-muted)',
+            flex: 1
+          }}>
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/appointments') ? "'FILL' 1" : "'FILL' 0" }}>schedule</span>
+            <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Mes RDV</span>
+          </Link>
 
-        <Link to="/registration" style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '4px',
-          color: isActive('/registration') ? 'var(--color-primary)' : 'var(--text-muted)',
-          flex: 1
-        }}>
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/registration') ? "'FILL' 1" : "'FILL' 0" }}>person</span>
-          <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Profil</span>
-        </Link>
+          <Link to="/registration" style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '4px',
+            color: isActive('/registration') ? 'var(--color-primary)' : 'var(--text-muted)',
+            flex: 1
+          }}>
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/registration') ? "'FILL' 1" : "'FILL' 0" }}>person</span>
+            <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Profil</span>
+          </Link>
+        </div>
       </nav>
 
       {/* Spacer to fix bottom nav covering content */}
