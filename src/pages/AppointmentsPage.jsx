@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-import { Calendar, Clock, MapPin } from 'lucide-react';
 import { insforge } from '../lib/insforge';
 
 export default function AppointmentsPage() {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -18,8 +16,6 @@ export default function AppointmentsPage() {
                 navigate('/register');
                 return;
             }
-
-            setUser(session.user);
 
             // Fetch user's appointments
             const { data, error } = await insforge.database
@@ -38,71 +34,98 @@ export default function AppointmentsPage() {
     }, [navigate]);
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
+        <>
             <Navigation />
 
-            <main style={{ flexGrow: 1, padding: '3rem 1.5rem', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
-                <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '1rem' }}>Mes Rendez-vous</h1>
-                <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem' }}>
-                    Retrouvez l'historique et les détails de vos réservations chez Vogue Beauty Nail Bar.
-                </p>
+            <main className="animate-fade-in" style={{ padding: '2rem 1.5rem', paddingBottom: '6rem' }}>
+                <div style={{ textAlign: 'center', marginTop: '1rem', marginBottom: '3rem' }}>
+                    <p className="label-mini" style={{ marginBottom: '0.5rem' }}>Espace Privé</p>
+                    <h1 style={{
+                        fontSize: '1.75rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        lineHeight: '1.2'
+                    }}>
+                        Mes Rendez-vous
+                    </h1>
+                </div>
 
                 {loading ? (
-                    <div style={{ textAlign: 'center', padding: '3rem' }}>Chargement de vos réservations...</div>
+                    <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>
+                        Chargement de vos précieux moments...
+                    </div>
                 ) : appointments.length === 0 ? (
-                    <div className="vogue-card" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
-                        <Calendar size={48} color="var(--text-secondary)" style={{ marginBottom: '1rem' }} />
-                        <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem' }}>Aucun rendez-vous</h3>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Vous n'avez pas encore réservé de prestation.</p>
-                        <Link to="/booking" className="btn btn-primary" style={{ display: 'inline-block', textDecoration: 'none' }}>
+                    <div style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: '64px', color: 'var(--border-color)', marginBottom: '1.5rem' }}>
+                            calendar_today
+                        </span>
+                        <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Aucun rendez-vous à venir</h3>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '2.5rem', fontSize: '0.875rem' }}>
+                            Prenez soin de vous en réservant votre prochaine prestation chez Vogue Beauty.
+                        </p>
+                        <button onClick={() => navigate('/booking')} className="btn btn-primary" style={{ width: '100%', maxWidth: '300px' }}>
                             Prendre Rendez-vous
-                        </Link>
+                        </button>
                     </div>
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                         {appointments.map((apt) => (
                             <div key={apt.id} className="vogue-card" style={{
-                                padding: '2.5rem',
+                                padding: '1.5rem',
                                 position: 'relative',
-                                overflow: 'hidden'
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '1rem'
                             }}>
-                                {/* Status Indicator */}
-                                <div style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    width: '4px',
-                                    height: '100%',
-                                    backgroundColor: 'var(--color-vogue-red)'
-                                }} />
-
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
-                                    <div>
-                                        <h3 style={{ fontSize: '1.3rem', fontFamily: 'var(--font-serif)', marginBottom: '0.2rem' }}>{apt.service_name}</h3>
-                                        <div style={{ display: 'inline-block', padding: '0.2rem 0.8rem', backgroundColor: '#e8f5e9', color: '#2e7d32', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                    <div style={{ flex: 1 }}>
+                                        <p className="label-mini" style={{ color: 'var(--color-primary)', marginBottom: '0.25rem' }}>
                                             {apt.status === 'confirmed' ? 'Confirmé' : apt.status}
-                                        </div>
+                                        </p>
+                                        <h3 style={{ fontSize: '1.125rem', fontWeight: 700 }}>{apt.service_name}</h3>
                                     </div>
-                                    <div style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--color-vogue-red)' }}>
-                                        {apt.service_price}
+                                    <div style={{ textAlign: 'right' }}>
+                                        <p style={{ fontWeight: 800, fontSize: '1.25rem' }}>{apt.service_price}{typeof apt.service_price === 'number' ? '€' : ''}</p>
                                     </div>
                                 </div>
 
-                                <div style={{ display: 'flex', gap: '2rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <Calendar size={16} />
-                                        <span>{new Date(apt.appointment_date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '0.75rem',
+                                    borderTop: '1px solid var(--border-color)',
+                                    paddingTop: '1rem',
+                                    color: 'var(--text-secondary)',
+                                    fontSize: '0.875rem'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>calendar_month</span>
+                                        <span>{new Date(apt.appointment_date).toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
                                     </div>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <Clock size={16} />
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>schedule</span>
                                         <span>{apt.appointment_time}</span>
                                     </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>location_on</span>
+                                        <span>Vogue Beauty Montaigne, Paris</span>
+                                    </div>
+                                </div>
+
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '1.5rem',
+                                    right: '1.5rem',
+                                    opacity: 0.03,
+                                    pointerEvents: 'none'
+                                }}>
+                                    <span className="material-symbols-outlined" style={{ fontSize: '80px' }}>spa</span>
                                 </div>
                             </div>
                         ))}
                     </div>
                 )}
             </main>
-        </div>
+        </>
     );
 }

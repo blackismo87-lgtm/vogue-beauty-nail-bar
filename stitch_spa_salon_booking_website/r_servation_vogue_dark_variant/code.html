@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Noto+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec1313",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#0a0505",
+                        "neutral-dark": "#1a0d0d",
+                    },
+                    fontFamily: {
+                        "display": ["Noto Serif", "serif"],
+                        "sans": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Noto Sans', sans-serif;
+        }
+        .serif-text {
+            font-family: 'Noto Serif', serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden max-w-md mx-auto shadow-2xl">
+<!-- Top Navigation -->
+<div class="flex items-center p-4 pb-2 justify-between">
+<div class="text-slate-900 dark:text-slate-100 flex size-12 shrink-0 items-center justify-start cursor-pointer">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</div>
+<h1 class="serif-text text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">
+                Vogue Beauty Nail Bar
+            </h1>
+</div>
+<!-- Progress Indicator -->
+<div class="flex flex-col gap-3 p-4">
+<div class="flex gap-6 justify-between items-end">
+<p class="text-slate-900 dark:text-slate-100 text-base font-medium leading-normal serif-text">Étape 1 sur 3</p>
+<p class="text-slate-600 dark:text-slate-400 text-sm font-normal leading-normal">33%</p>
+</div>
+<div class="rounded-full bg-primary/20 h-1.5 w-full">
+<div class="h-full rounded-full bg-primary" style="width: 33%;"></div>
+</div>
+</div>
+<!-- Section: Services -->
+<div class="px-4 pt-5 pb-3">
+<h2 class="serif-text text-slate-900 dark:text-white text-[22px] font-bold leading-tight tracking-tight">Choisir un Service</h2>
+</div>
+<div class="grid grid-cols-2 gap-3 p-4">
+<!-- Service Card 1 -->
+<div class="relative group cursor-pointer aspect-[3/4] rounded-lg overflow-hidden border border-primary/10">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Close up of luxury red manicure" style='background-image: linear-gradient(0deg, rgba(10, 5, 5, 0.9) 0%, rgba(10, 5, 5, 0.2) 50%, rgba(10, 5, 5, 0.1) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDzR7e9iZamZrhjk8rOzLKEsiSB1ti6wgWNbUOqrPLP7UqljhgzX7M5XsbiOO1d_RQjJCvWaQVNdwyGzTsspmlGI7Nlt9API65OjyHjO8El2O7-yGhkqyK52VHDML7gQU2vaB36BXCulob3Rfd_fkv5AuIV69TUEGc5J1HtCCdN3B5sQXrL35z1FuXqkSvevtm7-4s3kxMmm7m0yyPqssIzHgqx2ysrPVsaJLAHDhZE6pMvopJU3x_qXU-fMHX1uAQxNh66wNaKaYk");'></div>
+<div class="absolute bottom-0 p-4 w-full">
+<p class="serif-text text-white text-base font-bold leading-tight">Manucure Spa Premium</p>
+<p class="text-primary text-xs font-semibold mt-1">45€ • 60 min</p>
+</div>
+<div class="absolute top-2 right-2 size-6 rounded-full bg-primary flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-xs">check</span>
+</div>
+</div>
+<!-- Service Card 2 -->
+<div class="relative group cursor-pointer aspect-[3/4] rounded-lg overflow-hidden border-2 border-primary">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Minimalist nail art design on dark background" style='background-image: linear-gradient(0deg, rgba(10, 5, 5, 0.9) 0%, rgba(10, 5, 5, 0.2) 50%, rgba(10, 5, 5, 0.1) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAf_VyaOvbJ3zp6CpFU_hQyK3tIdonyXKCklq5YiCPm1ovpgOxnZjhezcIDnU_P7_-Ks__oTutu8tplcV-OzsY3k_vlSJyy5e6SWWRYpD5Td1o4T7VMB9mH2iIn3UB_pxcDr5XDTyD_dZYs5Vx0ZypBk1RNpg1mWwdOXUZWKYB6AFGc3joWl_j5rg2uO1vTkO3OlhNm-X1hwgxWwDdwRo96LCMXRozM6ewQVOOQuoXboKa35MoDMBUGc08MfRTHALs4L6Mz5Gj4YYg");'></div>
+<div class="absolute bottom-0 p-4 w-full">
+<p class="serif-text text-white text-base font-bold leading-tight">Vernis Semi-Permanent</p>
+<p class="text-primary text-xs font-semibold mt-1">35€ • 45 min</p>
+</div>
+<div class="absolute top-2 right-2 size-6 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[16px]">check</span>
+</div>
+</div>
+</div>
+<!-- Section: Date Selection -->
+<div class="px-4 pt-6 pb-2">
+<div class="flex justify-between items-center mb-4">
+<h2 class="serif-text text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Choisir une Date</h2>
+<span class="text-primary text-sm font-medium">Novembre 2024</span>
+</div>
+<!-- Minimalist Calendar -->
+<div class="bg-neutral-dark rounded-xl p-4 border border-white/5 shadow-inner">
+<div class="grid grid-cols-7 gap-2 text-center mb-2">
+<span class="text-slate-500 text-[10px] font-bold uppercase">Lu</span>
+<span class="text-slate-500 text-[10px] font-bold uppercase">Ma</span>
+<span class="text-slate-500 text-[10px] font-bold uppercase">Me</span>
+<span class="text-slate-500 text-[10px] font-bold uppercase">Je</span>
+<span class="text-slate-500 text-[10px] font-bold uppercase">Ve</span>
+<span class="text-slate-500 text-[10px] font-bold uppercase">Sa</span>
+<span class="text-slate-500 text-[10px] font-bold uppercase">Di</span>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<button class="aspect-square flex items-center justify-center text-slate-700 text-sm">28</button>
+<button class="aspect-square flex items-center justify-center text-slate-700 text-sm">29</button>
+<button class="aspect-square flex items-center justify-center text-slate-700 text-sm">30</button>
+<button class="aspect-square flex items-center justify-center text-slate-700 text-sm">31</button>
+<button class="aspect-square flex items-center justify-center text-slate-100 text-sm hover:text-primary">1</button>
+<button class="aspect-square flex items-center justify-center text-slate-100 text-sm hover:text-primary">2</button>
+<button class="aspect-square flex items-center justify-center text-slate-100 text-sm hover:text-primary">3</button>
+<button class="aspect-square flex items-center justify-center text-slate-100 text-sm hover:text-primary">4</button>
+<button class="aspect-square flex items-center justify-center text-slate-100 text-sm hover:text-primary relative after:content-[''] after:absolute after:bottom-1 after:w-1 after:h-1 after:bg-primary/50 after:rounded-full">5</button>
+<button class="aspect-square flex items-center justify-center bg-primary text-white rounded-full text-sm font-bold shadow-lg shadow-primary/20">6</button>
+<button class="aspect-square flex items-center justify-center text-slate-100 text-sm hover:text-primary relative after:content-[''] after:absolute after:bottom-1 after:w-1 after:h-1 after:bg-primary/50 after:rounded-full">7</button>
+<button class="aspect-square flex items-center justify-center text-slate-100 text-sm hover:text-primary">8</button>
+<button class="aspect-square flex items-center justify-center text-slate-100 text-sm hover:text-primary">9</button>
+<button class="aspect-square flex items-center justify-center text-slate-100 text-sm hover:text-primary">10</button>
+</div>
+</div>
+</div>
+<!-- Section: Time Selection -->
+<div class="px-4 pt-6 pb-2">
+<h2 class="serif-text text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight mb-4">Créneau Horaire</h2>
+<div class="grid grid-cols-3 gap-3">
+<button class="py-3 px-2 border border-white/20 rounded text-slate-100 text-sm font-medium hover:border-primary transition-colors">09:00</button>
+<button class="py-3 px-2 border border-white/20 rounded text-slate-100 text-sm font-medium hover:border-primary transition-colors">10:30</button>
+<button class="py-3 px-2 bg-primary border border-primary rounded text-white text-sm font-bold shadow-lg shadow-primary/20">12:00</button>
+<button class="py-3 px-2 border border-white/20 rounded text-slate-100 text-sm font-medium hover:border-primary transition-colors">14:00</button>
+<button class="py-3 px-2 border border-white/20 rounded text-slate-100 text-sm font-medium hover:border-primary transition-colors">15:30</button>
+<button class="py-3 px-2 border border-white/20 rounded text-slate-100 text-sm font-medium hover:border-primary transition-colors">17:00</button>
+</div>
+</div>
+<!-- Sticky Bottom Button -->
+<div class="mt-auto p-4 bg-background-light dark:bg-background-dark/95 backdrop-blur-md sticky bottom-0">
+<button class="w-full bg-primary hover:bg-red-600 transition-colors py-4 rounded-lg flex items-center justify-center gap-2 shadow-[0_10px_30px_rgba(236,19,19,0.3)] border-t border-white/10 group">
+<span class="serif-text text-white text-lg font-bold tracking-wide">Confirmer la Réservation</span>
+<span class="material-symbols-outlined text-white group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<p class="text-center text-slate-500 text-xs mt-3 uppercase tracking-widest font-medium">Pas de frais d'annulation</p>
+</div>
+</div>
+</body></html>

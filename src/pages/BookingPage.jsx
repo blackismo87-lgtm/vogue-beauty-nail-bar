@@ -1,61 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
-import { ChevronLeft, ChevronRight, Calendar as CalIcon, Clock } from 'lucide-react';
 import { insforge } from '../lib/insforge';
+
+const SERVICES = [
+    { id: 1, name: 'Manucure & Pédicure Royale', price: 85, duration: '90 min', icon: 'fluid_med' },
+    { id: 2, name: 'Soin Visage Éclat Pur', price: 65, duration: '60 min', icon: 'spa' },
+    { id: 3, name: 'Massage Signature Vogue', price: 120, duration: '75 min', icon: 'self_care' },
+    { id: 4, name: 'Pose de Vernis Semi-Permanent', price: 45, duration: '45 min', icon: 'colors' }
+];
+
+const TIME_SLOTS = [
+    '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00'
+];
 
 export default function BookingPage() {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    const [loadingAuth, setLoadingAuth] = useState(true);
-
-    // Form state
     const [step, setStep] = useState(1);
     const [selectedService, setSelectedService] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
-
-    // Booking submission state
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState(null);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
 
-    // Generate upcoming dates dynamically
-    const upcomingDates = React.useMemo(() => {
-        const dates = [];
-        const today = new Date();
-        for (let i = 0; i < 6; i++) {
-            const d = new Date(today);
-            d.setDate(today.getDate() + i);
-            dates.push(d);
-        }
-        return dates;
-    }, []);
-
-    const currentMonthLabel = upcomingDates.length > 0
-        ? upcomingDates[0].toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase())
-        : '';
-
     useEffect(() => {
-        const checkUser = async () => {
+        const checkSession = async () => {
             const { data } = await insforge.auth.getCurrentSession();
             if (data?.session?.user) {
                 setUser(data.session.user);
             }
-            setLoadingAuth(false);
         };
-        checkUser();
+        checkSession();
     }, []);
 
-    const handleConfirmBooking = async () => {
+    // Use current week for the calendar as per mockup "Vogue Beauty Flow"
+    const calendarDays = useMemo(() => {
+        const days = [];
+        const today = new Date();
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(today);
+            date.setDate(today.getDate() + i);
+            days.push(date);
+        }
+        return days;
+    }, []);
+
+    const handleCreateBooking = async () => {
         if (!user) {
-            // Redirect to login if unauthenticated
             navigate('/register');
             return;
         }
 
-        setIsSubmitting(true);
-        setError(null);
+        setLoading(true);
+        setError('');
 
         try {
             const { error: dbError } = await insforge.database
@@ -63,231 +62,287 @@ export default function BookingPage() {
                 .insert([
                     {
                         user_email: user.email,
-                        user_name: user.profile?.name || 'Client',
+                        user_name: user.user_metadata?.first_name
+                            ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ''}`
+                            : user.email,
                         service_name: selectedService.name,
                         service_price: selectedService.price,
-                        appointment_date: selectedDate, // dynamically set to 'YYYY-MM-DD'
+                        appointment_date: selectedDate.toISOString().split('T')[0],
                         appointment_time: selectedTime,
                         status: 'confirmed'
                     }
                 ]);
 
             if (dbError) throw dbError;
-
             setSuccess(true);
         } catch (err) {
-            setError(err.message || "Erreur lors de la réservation.");
+            setError(err.message || "Une erreur est survenue lors de la réservation.");
         } finally {
-            setIsSubmitting(false);
+            setLoading(false);
         }
     };
 
-    const services = [
-        { id: 1, name: 'Manucure Classique', price: '45€', duration: '45 min' },
-        { id: 2, name: 'Pédicure Spa Signature', price: '70€', duration: '60 min' },
-        { id: 3, name: 'Massage Suédois', price: '90€', duration: '60 min' }
-    ];
+    const steps = ['Services', 'Date & Heure', 'Confirmation'];
 
-    const timeSlots = ['09:00', '10:30', '13:00', '14:30', '16:00', '17:30'];
-    const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+    if (success) {
+        return (
+            <>
+                <Navigation />
+                <main className="animate-fade-in" style={{ padding: '4rem 1.5rem', textAlign: 'center' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '80px', color: '#16a34a', marginBottom: '2rem' }}>check_circle</span>
+                    <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Réservation Confirmée</h2>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '3rem' }}>
+                        Merci pour votre confiance. Vous recevrez un e-mail de confirmation sous peu.
+                    </p>
+                    <button onClick={() => navigate('/appointments')} className="btn btn-primary" style={{ width: '100%', maxWidth: '300px' }}>
+                        Voir mes rendez-vous
+                    </button>
+                </main>
+            </>
+        );
+    }
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
+        <>
             <Navigation />
 
-            <main style={{ flexGrow: 1, padding: '2rem 1.5rem', maxWidth: '600px', margin: '0 auto', width: '100%' }}>
-                {/* Progress Bar */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '3rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                    <span style={{ color: step >= 1 ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: step >= 1 ? 700 : 400 }}>Services</span>
-                    <span>&gt;</span>
-                    <span style={{ color: step >= 2 ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: step >= 2 ? 700 : 400 }}>Date & Heure</span>
-                    <span>&gt;</span>
-                    <span style={{ color: step >= 3 ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: step >= 3 ? 700 : 400 }}>Confirmation</span>
+            <main className="animate-fade-in" style={{ padding: '1.5rem', paddingBottom: '10rem' }}>
+                {/* Step Indicator */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2.5rem', marginTop: '1rem' }}>
+                    {steps.map((label, idx) => (
+                        <div key={label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, position: 'relative' }}>
+                            <div style={{
+                                width: '0.5rem',
+                                height: '0.5rem',
+                                borderRadius: '50%',
+                                backgroundColor: step > idx ? 'var(--color-primary)' : 'var(--border-color)',
+                                marginBottom: '0.75rem',
+                                zIndex: 2
+                            }}></div>
+                            <span style={{
+                                fontSize: '0.625rem',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.15em',
+                                fontWeight: step === idx + 1 ? 800 : 400,
+                                color: step === idx + 1 ? 'var(--text-primary)' : 'var(--text-muted)'
+                            }}>
+                                {label}
+                            </span>
+                            {idx < steps.length - 1 && (
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '0.2rem',
+                                    left: '50%',
+                                    width: '100%',
+                                    height: '1px',
+                                    backgroundColor: 'var(--border-color)',
+                                    zIndex: 1
+                                }}></div>
+                            )}
+                        </div>
+                    ))}
                 </div>
 
+                {/* Step Contents */}
                 {step === 1 && (
-                    <div>
-                        <h2 style={{ fontSize: '1.8rem', marginBottom: '2rem', fontFamily: 'var(--font-serif)' }}>Choisissez un Service</h2>
+                    <div className="animate-fade-in">
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '2rem', textAlign: 'center' }}>Quelle prestation désirez-vous ?</h2>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            {services.map(s => (
+                            {SERVICES.map((s) => (
                                 <div
                                     key={s.id}
-                                    className="vogue-card"
                                     onClick={() => setSelectedService(s)}
                                     style={{
                                         padding: '1.5rem',
-                                        borderColor: selectedService?.id === s.id ? 'var(--color-vogue-red)' : 'var(--border-color)',
+                                        borderRadius: '1rem',
+                                        border: selectedService?.id === s.id ? '2px solid var(--color-primary)' : '1px solid var(--border-color)',
+                                        backgroundColor: selectedService?.id === s.id ? 'rgba(236, 19, 19, 0.03)' : 'var(--bg-card)',
                                         display: 'flex',
-                                        justifyContent: 'space-between',
                                         alignItems: 'center',
+                                        gap: '1.25rem',
                                         cursor: 'pointer',
+                                        transition: 'all 0.2s ease'
                                     }}
                                 >
-                                    <div>
-                                        <h3 style={{ fontSize: '1.1rem', marginBottom: '0.2rem' }}>{s.name}</h3>
-                                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}><Clock size={14} style={{ display: 'inline', verticalAlign: 'text-bottom', marginRight: '4px' }} />{s.duration}</p>
+                                    <span className="material-symbols-outlined" style={{ fontSize: '2rem', color: selectedService?.id === s.id ? 'var(--color-primary)' : 'var(--text-muted)' }}>
+                                        {s.icon}
+                                    </span>
+                                    <div style={{ flex: 1 }}>
+                                        <h3 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>{s.name}</h3>
+                                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{s.duration}</p>
                                     </div>
-                                    <div style={{ fontSize: '1.2rem', fontWeight: 600 }}>{s.price}</div>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <p style={{ fontWeight: 800, fontSize: '1.125rem' }}>{s.price}€</p>
+                                        {selectedService?.id === s.id && <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '1.25rem' }}>check_circle</span>}
+                                    </div>
                                 </div>
                             ))}
                         </div>
-
-                        <button
-                            className="btn btn-primary"
-                            style={{ width: '100%', marginTop: '3rem', opacity: selectedService ? 1 : 0.5 }}
-                            disabled={!selectedService}
-                            onClick={() => setStep(2)}
-                        >
-                            Continuer
-                        </button>
                     </div>
                 )}
 
                 {step === 2 && (
-                    <div>
-                        <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginBottom: '1.5rem' }} onClick={() => setStep(1)}>
-                            <ChevronLeft size={20} /> <span style={{ fontWeight: 600 }}>Retour</span>
-                        </div>
-                        <h2 style={{ fontSize: '1.8rem', marginBottom: '2rem', fontFamily: 'var(--font-serif)' }}>Sélectionnez une Date</h2>
+                    <div className="animate-fade-in">
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '2rem', textAlign: 'center' }}>Sélectionnez un créneau</h2>
 
-                        {/* Dynamic Calendar */}
-                        <div className="vogue-card" style={{ padding: '2rem', marginBottom: '2.5rem' }}>
+                        {/* Minimal Calendar */}
+                        <div style={{
+                            backgroundColor: 'var(--bg-card)',
+                            borderRadius: '1.5rem',
+                            padding: '1.5rem',
+                            boxShadow: '0 10px 30px rgba(0,0,0,0.05)',
+                            marginBottom: '2.5rem'
+                        }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                                <ChevronLeft size={20} color="#ccc" style={{ cursor: 'not-allowed' }} />
-                                <span style={{ fontWeight: 600 }}>{currentMonthLabel}</span>
-                                <ChevronRight size={20} color="#ccc" style={{ cursor: 'not-allowed' }} />
+                                <span className="material-symbols-outlined" style={{ cursor: 'pointer' }}>chevron_left</span>
+                                <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                    {calendarDays[0].toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}
+                                </span>
+                                <span className="material-symbols-outlined" style={{ cursor: 'pointer' }}>chevron_right</span>
                             </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '0.5rem', textAlign: 'center', marginBottom: '1rem' }}>
-                                {upcomingDates.map((dateObj, idx) => (
-                                    <div key={`day-${idx}`} style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'capitalize' }}>
-                                        {dateObj.toLocaleDateString('fr-FR', { weekday: 'short' }).replace('.', '')}
-                                    </div>
-                                ))}
-                            </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '0.5rem', textAlign: 'center' }}>
-                                {upcomingDates.map((dateObj, idx) => {
-                                    const year = dateObj.getFullYear();
-                                    const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-                                    const day = String(dateObj.getDate()).padStart(2, '0');
-                                    const dateStr = `${year}-${month}-${day}`;
-
-                                    const isSelected = selectedDate === dateStr;
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.5rem' }}>
+                                {calendarDays.map((d) => {
+                                    const isSelected = selectedDate?.toDateString() === d.toDateString();
                                     return (
                                         <div
-                                            key={`date-${idx}`}
-                                            onClick={() => setSelectedDate(dateStr)}
+                                            key={d.toISOString()}
+                                            onClick={() => setSelectedDate(d)}
                                             style={{
-                                                aspectRatio: '1',
                                                 display: 'flex',
+                                                flexDirection: 'column',
                                                 alignItems: 'center',
-                                                justifyContent: 'center',
-                                                borderRadius: '50%',
+                                                padding: '0.75rem 0',
+                                                borderRadius: '1rem',
                                                 cursor: 'pointer',
-                                                backgroundColor: isSelected ? 'var(--color-vogue-red)' : 'transparent',
-                                                color: isSelected ? 'var(--color-white)' : 'var(--text-primary)',
-                                                fontWeight: isSelected ? 600 : 400
+                                                backgroundColor: isSelected ? 'var(--color-primary)' : 'transparent',
+                                                color: isSelected ? 'white' : 'inherit',
+                                                transition: 'all 0.2s'
                                             }}
                                         >
-                                            {dateObj.getDate()}
+                                            <span style={{ fontSize: '0.625rem', opacity: 0.6, marginBottom: '0.25rem' }}>
+                                                {d.toLocaleDateString('fr-FR', { weekday: 'short' }).replace('.', '')}
+                                            </span>
+                                            <span style={{ fontWeight: 700 }}>{d.getDate()}</span>
                                         </div>
                                     );
                                 })}
                             </div>
                         </div>
 
-                        <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', fontFamily: 'var(--font-serif)' }}>Heure Disponible</h3>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-                            {timeSlots.map(time => (
-                                <div
-                                    key={time}
-                                    onClick={() => setSelectedTime(time)}
+                        {/* Time Slots */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                            {TIME_SLOTS.map((t) => (
+                                <button
+                                    key={t}
+                                    onClick={() => setSelectedTime(t)}
                                     style={{
-                                        padding: '0.75rem 0',
-                                        textAlign: 'center',
-                                        border: `1px solid ${selectedTime === time ? 'var(--color-vogue-red)' : 'var(--border-color)'}`,
-                                        borderRadius: '8px',
+                                        padding: '1rem 0',
+                                        borderRadius: '0.75rem',
+                                        border: selectedTime === t ? '2px solid var(--color-primary)' : '1px solid var(--border-color)',
+                                        backgroundColor: selectedTime === t ? 'rgba(236, 19, 19, 0.05)' : 'transparent',
+                                        color: selectedTime === t ? 'var(--color-primary)' : 'inherit',
+                                        fontWeight: 700,
                                         cursor: 'pointer',
-                                        backgroundColor: selectedTime === time ? 'var(--color-vogue-red)' : 'transparent',
-                                        color: selectedTime === time ? 'var(--color-white)' : 'inherit',
-                                        fontWeight: 600
+                                        transition: 'all 0.2s'
                                     }}
-                                >{time}</div>
+                                >
+                                    {t}
+                                </button>
                             ))}
                         </div>
-
-                        <button
-                            className="btn btn-primary"
-                            style={{ width: '100%', opacity: (selectedDate && selectedTime) ? 1 : 0.5 }}
-                            disabled={!(selectedDate && selectedTime)}
-                            onClick={() => {
-                                if (!user) {
-                                    alert('Veuillez vous connecter pour continuer.');
-                                    navigate('/register');
-                                } else {
-                                    setStep(3);
-                                }
-                            }}
-                        >
-                            Voir le Récapitulatif
-                        </button>
                     </div>
                 )}
 
                 {step === 3 && (
-                    <div>
-                        <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginBottom: '1.5rem' }} onClick={() => setStep(2)}>
-                            <ChevronLeft size={20} /> <span style={{ fontWeight: 600 }}>Retour</span>
+                    <div className="animate-fade-in" style={{ textAlign: 'center' }}>
+                        <h2 style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>Finalisez votre visite</h2>
+
+                        <div className="vogue-card" style={{ padding: '2rem', textAlign: 'left', position: 'relative', overflow: 'hidden' }}>
+                            <div style={{ position: 'absolute', top: '-20px', right: '-20px', opacity: 0.05 }}>
+                                <span className="material-symbols-outlined" style={{ fontSize: '120px' }}>content_paste_search</span>
+                            </div>
+
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <p className="label-mini">Prestation</p>
+                                <p style={{ fontSize: '1.25rem', fontWeight: 700 }}>{selectedService.name}</p>
+                                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Durée: {selectedService.duration}</p>
+                            </div>
+
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <p className="label-mini">Date & Heure</p>
+                                <p style={{ fontSize: '1.125rem', fontWeight: 700 }}>
+                                    {selectedDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                </p>
+                                <p style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-primary)' }}>à {selectedTime}</p>
+                            </div>
+
+                            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontWeight: 800, fontSize: '1.25rem' }}>Total</span>
+                                <span style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--color-primary)' }}>{selectedService.price}€</span>
+                            </div>
                         </div>
-                        <h2 style={{ fontSize: '1.8rem', marginBottom: '2rem', fontFamily: 'var(--font-serif)' }}>Confirmation</h2>
 
-                        <div className="vogue-card" style={{ padding: '2.5rem', marginBottom: '3rem' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                                <span style={{ color: 'var(--text-secondary)' }}>Service</span>
-                                <span style={{ fontWeight: 600 }}>{selectedService?.name}</span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-                                <span style={{ color: 'var(--text-secondary)' }}>Date</span>
-                                <span style={{ fontWeight: 600 }}>
-                                    {selectedDate ? new Date(selectedDate + 'T00:00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }) : ''} à {selectedTime}
-                                </span>
-                            </div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.2rem' }}>
-                                <span style={{ fontWeight: 700 }}>Total</span>
-                                <span style={{ fontWeight: 700, color: 'var(--color-vogue-red)' }}>{selectedService?.price}</span>
-                            </div>
-                        </div>
-
-                        {error && (
-                            <div style={{ padding: '1rem', marginBottom: '1.5rem', backgroundColor: '#ffebee', color: 'var(--color-vogue-red)', border: '1px solid var(--color-vogue-red)', borderRadius: '4px', fontSize: '0.9rem' }}>
-                                {error}
-                            </div>
-                        )}
-
-                        {success ? (
-                            <div className="vogue-card" style={{ textAlign: 'center', padding: '3rem 2rem', border: '1px solid #4caf50' }}>
-                                <h3 style={{ color: '#2e7d32', marginBottom: '1rem', fontSize: '1.5rem', fontFamily: 'var(--font-serif)' }}>Rendez-vous Confirmé !</h3>
-                                <p style={{ color: 'var(--text-secondary)' }}>Un email de confirmation a été envoyé à {user?.email}.</p>
-                                <button className="btn btn-primary" style={{ marginTop: '2rem' }} onClick={() => navigate('/')}>Retour à l'accueil</button>
-                            </div>
-                        ) : (
-                            <>
-                                <button
-                                    className="btn btn-primary"
-                                    style={{ width: '100%', opacity: isSubmitting ? 0.7 : 1 }}
-                                    onClick={handleConfirmBooking}
-                                    disabled={isSubmitting}
-                                >
-                                    {isSubmitting ? 'Confirmation en cours...' : 'Confirmer la Réservation'}
-                                </button>
-                                <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
-                                    <Link to="/" style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}>Annuler</Link>
-                                </div>
-                            </>
-                        )}
+                        {error && <p style={{ color: 'var(--color-primary)', marginTop: '1rem', fontSize: '0.875rem' }}>{error}</p>}
                     </div>
                 )}
 
+                {/* Mockup Bottom Summary Bar */}
+                {selectedService && (
+                    <div style={{
+                        position: 'fixed',
+                        bottom: '80px', // Above bottom nav
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        width: 'calc(100% - 2rem)',
+                        maxWidth: '450px',
+                        backgroundColor: 'var(--color-dark)',
+                        color: 'white',
+                        borderRadius: '1.25rem',
+                        padding: '1.25rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+                        zIndex: 100,
+                        animation: 'slide-up 0.5s ease-out'
+                    }}>
+                        <div>
+                            <p style={{ fontSize: '0.625rem', textTransform: 'uppercase', opacity: 0.6, letterSpacing: '0.1em' }}>Récapitulatif</p>
+                            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+                                <span style={{ fontWeight: 800, fontSize: '1.125rem' }}>{selectedService.price}€</span>
+                                <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>/ {selectedService.name}</span>
+                            </div>
+                        </div>
+
+                        {step < 3 ? (
+                            <button
+                                disabled={(step === 2 && (!selectedDate || !selectedTime))}
+                                onClick={() => setStep(step + 1)}
+                                className="btn btn-primary"
+                                style={{
+                                    padding: '0.75rem 1.5rem',
+                                    borderRadius: '0.75rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '0.5rem',
+                                    opacity: (step === 2 && (!selectedDate || !selectedTime)) ? 0.5 : 1
+                                }}
+                            >
+                                Continuer <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>arrow_forward</span>
+                            </button>
+                        ) : (
+                            <button
+                                onClick={handleCreateBooking}
+                                disabled={loading}
+                                className="btn btn-primary"
+                                style={{ padding: '0.75rem 1.5rem', borderRadius: '0.75rem' }}
+                            >
+                                {loading ? 'Traitement...' : 'Confirmer'}
+                            </button>
+                        )}
+                    </div>
+                )}
             </main>
-        </div>
+        </>
     );
 }

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&amp;family=Playfair+Display:ital,wght@0,700;1,700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f53d99",
+                        "background-light": "#f8f5f7",
+                        "background-dark": "#221019",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden max-w-[430px] mx-auto shadow-2xl">
+<!-- Header -->
+<header class="flex items-center bg-white/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50 p-4 justify-between border-b border-primary/10">
+<div class="flex size-10 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-slate-900 dark:text-slate-100">menu</span>
+</div>
+<h1 class="text-slate-900 dark:text-slate-100 text-xl font-serif italic font-bold leading-tight tracking-tight flex-1 text-center">Vogue Beauty</h1>
+<div class="flex size-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-full h-10 w-10 bg-transparent text-slate-900 dark:text-slate-100">
+<span class="material-symbols-outlined">shopping_bag</span>
+</button>
+</div>
+</header>
+<!-- Hero Section -->
+<main class="flex flex-col">
+<div class="relative w-full aspect-[3/4] overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Editorial close-up of manicured hands with bold red polish" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.8)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuCg3Wi7fgmHkxW490aUWkzZZLpbJFtmPHUawGb3t3W_CCSnL38EaRDGJqWBt95KVPWE-TK9308ihw97XOqdCRAbyjpq_gl_DU83yGK3-Hk4Ahtjq9jxLsfA8xzxRyr1sqoh7t93MRfBv0T_5cGzmHt1sCwqfRU15cwJBEqjimQwyyWAvMrC_valccZIPbgvWP4CXuSI8Ckcf4wqHV-f85uu2Xut-v8bLVP2J3YZ94aGdLvCsLm13GrRgxqMabgXBkOXXA_Pg3-vasI');">
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-8 flex flex-col items-center text-center">
+<h2 class="text-white text-5xl font-serif italic mb-2">Vogue Beauty</h2>
+<p class="text-white/80 uppercase tracking-[0.3em] text-sm mb-8">Nail Bar &amp; Spa</p>
+<button class="w-full max-w-xs bg-primary hover:bg-primary/90 text-white font-bold py-4 px-8 rounded-full shadow-lg shadow-primary/30 transition-all uppercase tracking-widest text-sm">
+                        Prendre Rendez-vous
+                    </button>
+</div>
+</div>
+<!-- Services Section -->
+<section class="px-6 py-12 bg-white dark:bg-background-dark">
+<div class="flex flex-col gap-10">
+<div class="text-center">
+<h3 class="text-2xl font-serif font-bold text-slate-900 dark:text-slate-100">Nos Services Exclusifs</h3>
+<div class="h-1 w-12 bg-primary mx-auto mt-2"></div>
+</div>
+<!-- Service Item 1 -->
+<div class="flex items-center justify-between group cursor-pointer border-b border-slate-100 dark:border-slate-800 pb-6">
+<div class="flex flex-col">
+<h4 class="text-lg font-bold text-slate-900 dark:text-slate-100 uppercase tracking-tight">Pédicure &amp; Manucure</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm">L'art de l'onglerie française</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">fluid_med</span>
+<span class="material-symbols-outlined text-slate-300">chevron_right</span>
+</div>
+</div>
+<!-- Service Item 2 -->
+<div class="flex items-center justify-between group cursor-pointer border-b border-slate-100 dark:border-slate-800 pb-6">
+<div class="flex flex-col">
+<h4 class="text-lg font-bold text-slate-900 dark:text-slate-100 uppercase tracking-tight">Soins du Corps</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Révélez votre éclat naturel</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">spa</span>
+<span class="material-symbols-outlined text-slate-300">chevron_right</span>
+</div>
+</div>
+<!-- Service Item 3 -->
+<div class="flex items-center justify-between group cursor-pointer border-b border-slate-100 dark:border-slate-800 pb-6">
+<div class="flex flex-col">
+<h4 class="text-lg font-bold text-slate-900 dark:text-slate-100 uppercase tracking-tight">Massages Relaxants</h4>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Une évasion sensorielle totale</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">self_care</span>
+<span class="material-symbols-outlined text-slate-300">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Location Section -->
+<section class="px-6 py-8 bg-background-light dark:bg-background-dark/50">
+<div class="rounded-xl overflow-hidden relative h-48 mb-4">
+<div class="absolute inset-0 bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
+<div class="bg-cover bg-center w-full h-full" data-alt="Map showing location in Paris" data-location="Paris" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBua9HdFZuIO3lscSSdx8pIA69Ug9wKIkcgUoQVk-9qpyEtywu-j7hqskhHINg0FMOm-J_Mi3hzdrhlDGe8wYNDVu3StuZxs6Rm8-6wS4Lii8AMiJtwR-tlVpvxC5kpFxfJVEWjHQeXAW9n28U9_C8PlSfKmu3I4J5aLy383QQHIDIR9QsWcOQPnTzNphttlY7goEl2tIBFC9OhZabLZOcXXu1mOYPJvmEE3Fg2gonmiMghzBt00F-uWOBVEor0XiqWXa7cquYfg2A');">
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<p class="font-bold text-slate-900 dark:text-slate-100">Vogue Beauty Paris</p>
+<p class="text-sm text-slate-500 dark:text-slate-400">12 Avenue Montaigne, 75008 Paris</p>
+<div class="flex gap-4 mt-3">
+<button class="flex-1 border border-primary/30 text-primary py-2 rounded-lg text-sm font-bold uppercase tracking-wider">Itinéraire</button>
+<button class="flex-1 border border-primary/30 text-primary py-2 rounded-lg text-sm font-bold uppercase tracking-wider">Appeler</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="sticky bottom-0 bg-white dark:bg-background-dark border-t border-slate-100 dark:border-slate-800 pb-8 pt-2 px-4 flex justify-between items-center z-50">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Accueil</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Services</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">RDV</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Profil</span>
+</a>
+</nav>
+</div>
+</body></html>

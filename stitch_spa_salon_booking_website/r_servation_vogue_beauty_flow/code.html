@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Noto+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ec1313",
+              "background-light": "#f8f6f6",
+              "background-dark": "#221010",
+            },
+            fontFamily: {
+              "display": ["Noto Serif", "serif"],
+              "sans": ["Noto Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Noto Sans', sans-serif; }
+        h1, h2, h3, .font-display { font-family: 'Noto Serif', serif; }
+        .custom-checkbox:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<div class="relative flex min-h-screen w-full flex-col max-w-md mx-auto bg-white dark:bg-background-dark shadow-2xl overflow-x-hidden">
+<!-- Header -->
+<div class="sticky top-0 z-20 bg-white/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-primary/10">
+<div class="flex items-center p-4 justify-between">
+<button class="text-slate-900 dark:text-slate-100 p-2 hover:bg-primary/10 rounded-full transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-xl font-display font-bold leading-tight tracking-tight flex-1 text-center">Vogue Beauty Nail Bar</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</div>
+<!-- Progress Bar -->
+<div class="px-6 pb-4">
+<div class="flex justify-between text-[10px] uppercase tracking-widest font-bold mb-2 text-primary">
+<span>Services</span>
+<span class="text-slate-400">Date &amp; Heure</span>
+<span class="text-slate-400">Confirmation</span>
+</div>
+<div class="h-1 w-full bg-primary/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 33.33%;"></div>
+</div>
+</div>
+</div>
+<!-- Content -->
+<main class="flex-1 overflow-y-auto pb-40">
+<!-- Service Selection -->
+<section class="p-6">
+<h2 class="text-lg font-display font-bold mb-4">Choisissez vos Services</h2>
+<div class="space-y-3">
+<!-- Service Card Selected -->
+<label class="relative flex items-center justify-between p-4 rounded-lg border-2 border-primary bg-primary/5 cursor-pointer">
+<input checked="" class="hidden peer" type="checkbox"/>
+<div class="flex-1">
+<p class="font-display font-bold text-slate-900 dark:text-slate-100">Manucure Classique</p>
+<p class="text-sm text-slate-500">45 mins</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-primary">45€</p>
+<div class="mt-1 flex justify-end">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+</div>
+</div>
+</label>
+<!-- Service Card -->
+<label class="relative flex items-center justify-between p-4 rounded-lg border border-primary/20 bg-white dark:bg-slate-800/50 cursor-pointer hover:border-primary/50 transition-colors">
+<input class="hidden peer" type="checkbox"/>
+<div class="flex-1">
+<p class="font-display font-bold text-slate-900 dark:text-slate-100">Pédicure Spa Signature</p>
+<p class="text-sm text-slate-500">60 mins</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-slate-700 dark:text-slate-300">70€</p>
+<div class="mt-1 flex justify-end">
+<span class="material-symbols-outlined text-slate-300 text-xl">add_circle</span>
+</div>
+</div>
+</label>
+<!-- Service Card -->
+<label class="relative flex items-center justify-between p-4 rounded-lg border border-primary/20 bg-white dark:bg-slate-800/50 cursor-pointer hover:border-primary/50 transition-colors">
+<input class="hidden peer" type="checkbox"/>
+<div class="flex-1">
+<p class="font-display font-bold text-slate-900 dark:text-slate-100">Massage Suédois</p>
+<p class="text-sm text-slate-500">90 mins</p>
+</div>
+<div class="text-right">
+<p class="font-bold text-slate-700 dark:text-slate-300">90€</p>
+<div class="mt-1 flex justify-end">
+<span class="material-symbols-outlined text-slate-300 text-xl">add_circle</span>
+</div>
+</div>
+</label>
+</div>
+</section>
+<!-- Calendar Section -->
+<section class="p-6 bg-primary/5">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-lg font-display font-bold">Sélectionner une Date</h2>
+<span class="text-sm font-medium text-primary">Octobre 2023</span>
+</div>
+<div class="grid grid-cols-7 gap-2 text-center mb-4">
+<span class="text-[10px] font-bold text-slate-400 uppercase">Lun</span>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Mar</span>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Mer</span>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Jeu</span>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Ven</span>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Sam</span>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Dim</span>
+<!-- Calendar Days Simulation -->
+<button class="h-10 w-10 flex items-center justify-center rounded-full text-slate-300" disabled="">28</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full text-slate-300" disabled="">29</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full text-slate-300" disabled="">30</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">1</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">2</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full bg-primary text-white font-bold shadow-lg shadow-primary/30">3</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">4</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">5</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">6</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">7</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">8</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">9</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">10</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-full hover:bg-white transition-colors">11</button>
+</div>
+<h3 class="text-sm font-bold uppercase tracking-widest text-slate-500 mb-3 mt-6">Créneaux Disponibles</h3>
+<div class="grid grid-cols-3 gap-2">
+<button class="py-2 px-3 border border-primary/20 bg-white rounded text-sm font-medium hover:bg-primary hover:text-white transition-colors">09:00</button>
+<button class="py-2 px-3 border border-primary bg-primary text-white rounded text-sm font-bold shadow-md">10:30</button>
+<button class="py-2 px-3 border border-primary/20 bg-white rounded text-sm font-medium hover:bg-primary hover:text-white transition-colors">11:15</button>
+<button class="py-2 px-3 border border-primary/20 bg-white rounded text-sm font-medium hover:bg-primary hover:text-white transition-colors">14:00</button>
+<button class="py-2 px-3 border border-primary/20 bg-white rounded text-sm font-medium hover:bg-primary hover:text-white transition-colors">15:30</button>
+<button class="py-2 px-3 border border-primary/20 bg-white rounded text-sm font-medium hover:bg-primary hover:text-white transition-colors">16:45</button>
+</div>
+</section>
+</main>
+<!-- Sticky Bottom Bar -->
+<div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-30">
+<!-- Recap Summary Pop-over style -->
+<div class="bg-slate-900 text-white px-6 py-4 rounded-t-xl shadow-2xl">
+<div class="flex justify-between items-center mb-4">
+<div>
+<p class="text-[10px] uppercase tracking-widest text-slate-400">Récapitulatif</p>
+<p class="font-display font-bold">1 Service • 03 Oct, 10:30</p>
+</div>
+<div class="text-right">
+<p class="text-2xl font-display font-bold text-primary">45€</p>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg flex items-center justify-center gap-2 transition-all active:scale-95">
+<span>Confirmer la Réservation</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<!-- Bottom Navigation Bar (Visual Placeholder) -->
+<div class="flex gap-2 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 pb-4 pt-2">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">home</span>
+</div>
+<p class="text-[10px] font-medium leading-normal">Accueil</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">calendar_month</span>
+</div>
+<p class="text-[10px] font-medium leading-normal">Réserver</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<p class="text-[10px] font-medium leading-normal">Mes RDV</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">person</span>
+</div>
+<p class="text-[10px] font-medium leading-normal">Profil</p>
+</a>
+</div>
+</div>
+</div>
+</body></html>

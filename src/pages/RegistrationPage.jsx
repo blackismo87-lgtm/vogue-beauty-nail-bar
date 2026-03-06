@@ -1,166 +1,218 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import { insforge } from '../lib/insforge';
 
 export default function RegistrationPage() {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
-    const [isVerifying, setIsVerifying] = useState(false);
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+    });
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-    const [successMsg, setSuccessMsg] = useState('');
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
 
-    // Form fields
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [verificationCode, setVerificationCode] = useState('');
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
 
-    const handleSubmit = async (e) => {
+    const handleAuth = async (e) => {
         e.preventDefault();
-        setError(null);
-        setSuccessMsg('');
         setLoading(true);
+        setError('');
+        setSuccess('');
 
         try {
-            if (isVerifying) {
-                const { data, error: verifyError } = await insforge.auth.verifyEmail({
-                    email,
-                    otp: verificationCode
+            if (isLogin) {
+                const { error: signInError } = await insforge.auth.signInWithPassword({
+                    email: formData.email,
+                    password: formData.password,
                 });
-
-                if (verifyError) throw verifyError;
-
-                if (data?.accessToken) {
-                    navigate('/booking');
-                }
-            } else if (isLogin) {
-                const { data, error: signInError } = await insforge.auth.signInWithPassword({
-                    email,
-                    password
-                });
-
                 if (signInError) throw signInError;
-
-                if (data?.accessToken) {
-                    navigate('/booking');
-                }
+                navigate('/booking');
             } else {
-                const { data, error: signUpError } = await insforge.auth.signUp({
-                    email,
-                    password,
-                    name: `${firstName} ${lastName}`.trim()
+                const { error: signUpError } = await insforge.auth.signUp({
+                    email: formData.email,
+                    password: formData.password,
+                    options: {
+                        data: {
+                            first_name: formData.firstName,
+                            last_name: formData.lastName,
+                        }
+                    }
                 });
-
                 if (signUpError) throw signUpError;
-
-                if (data?.requireEmailVerification) {
-                    setIsVerifying(true);
-                    setSuccessMsg('Un code a été envoyé à votre adresse e-mail. Veuillez le saisir ci-dessous.');
-                } else if (data?.accessToken) {
-                    navigate('/booking');
-                } else {
-                    // Fallback
-                    navigate('/booking');
-                }
+                setSuccess('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+                setIsLogin(true);
             }
         } catch (err) {
-            setError(err.message || 'Une erreur est survenue.');
+            setError(err.message || "Une erreur est survenue");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
+        <>
             <Navigation />
 
-            <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 1.5rem' }}>
+            <main className="animate-fade-in" style={{ padding: '2rem 1.5rem', display: 'flex', flexDirection: 'column', minHeight: '80vh' }}>
+                {/* Header / Logo Area */}
+                <div style={{ textAlign: 'center', marginTop: '1rem', marginBottom: '3rem' }}>
+                    <h1 style={{
+                        fontSize: '1.75rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        lineHeight: '1.2',
+                        fontStyle: 'normal'
+                    }}>
+                        Vogue Beauty<br />
+                        <span style={{ fontSize: '1.25rem', fontWeight: 400 }}>Nail Bar</span>
+                    </h1>
+                </div>
 
-                <div className="vogue-card" style={{ width: '100%', maxWidth: '450px', padding: '3rem 2.5rem' }}>
+                {/* Toggle Switcher */}
+                <div style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', marginBottom: '2.5rem' }}>
+                    <button
+                        type="button"
+                        onClick={() => { setIsLogin(false); setError(''); setSuccess(''); }}
+                        style={{
+                            flex: 1,
+                            paddingBottom: '1rem',
+                            background: 'none',
+                            border: 'none',
+                            borderBottom: !isLogin ? '2px solid var(--color-primary)' : '2px solid transparent',
+                            color: !isLogin ? 'var(--text-primary)' : 'var(--text-muted)',
+                            fontWeight: 700,
+                            fontSize: '0.875rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        S'inscrire
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => { setIsLogin(true); setError(''); setSuccess(''); }}
+                        style={{
+                            flex: 1,
+                            paddingBottom: '1rem',
+                            background: 'none',
+                            border: 'none',
+                            borderBottom: isLogin ? '2px solid var(--color-primary)' : '2px solid transparent',
+                            color: isLogin ? 'var(--text-primary)' : 'var(--text-muted)',
+                            fontWeight: 700,
+                            fontSize: '0.875rem',
+                            cursor: 'pointer',
+                            transition: 'all 0.2s'
+                        }}
+                    >
+                        Se connecter
+                    </button>
+                </div>
 
-                    {/* Logo / Title */}
-                    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', fontWeight: 700 }}>
-                            V<span style={{ color: 'var(--color-vogue-red)' }}>o</span>gue
-                        </h1>
-                        <p style={{ letterSpacing: '2px', textTransform: 'uppercase', fontSize: '0.8rem', marginTop: '0.5rem' }}>Beauty Nail Bar</p>
+                {/* Form Section */}
+                <form onSubmit={handleAuth} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    {error && (
+                        <div style={{ padding: '1rem', backgroundColor: 'rgba(236, 19, 19, 0.1)', color: 'var(--color-primary)', borderRadius: '0.5rem', fontSize: '0.875rem' }}>
+                            {error}
+                        </div>
+                    )}
+
+                    {success && (
+                        <div style={{ padding: '1rem', backgroundColor: 'rgba(34, 197, 94, 0.1)', color: '#16a34a', borderRadius: '0.5rem', fontSize: '0.875rem' }}>
+                            {success}
+                        </div>
+                    )}
+
+                    {!isLogin && (
+                        <>
+                            <div>
+                                <label className="label-mini">Prénom</label>
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleInputChange}
+                                    className="editorial-input"
+                                    placeholder="Prénom"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="label-mini">Nom de famille</label>
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleInputChange}
+                                    className="editorial-input"
+                                    placeholder="Nom de famille"
+                                    required
+                                />
+                            </div>
+                        </>
+                    )}
+
+                    <div>
+                        <label className="label-mini">Adresse e-mail</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            className="editorial-input"
+                            placeholder="votre@email.com"
+                            required
+                        />
                     </div>
 
-                    {/* Toggle */}
-                    <div style={{ display: 'flex', borderBottom: '1px solid var(--border-color)', marginBottom: '2rem' }}>
-                        <button
-                            type="button"
-                            onClick={() => { setIsLogin(false); setError(null); setSuccessMsg(''); }}
-                            style={{ flex: 1, padding: '1rem', background: 'transparent', border: 'none', borderBottom: `2px solid ${!isLogin ? 'var(--color-vogue-red)' : 'transparent'}`, fontWeight: !isLogin ? 700 : 400, color: !isLogin ? 'var(--text-primary)' : 'var(--text-secondary)' }}
-                        >
-                            S'inscrire
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => { setIsLogin(true); setError(null); setSuccessMsg(''); }}
-                            style={{ flex: 1, padding: '1rem', background: 'transparent', border: 'none', borderBottom: `2px solid ${isLogin ? 'var(--color-vogue-red)' : 'transparent'}`, fontWeight: isLogin ? 700 : 400, color: isLogin ? 'var(--text-primary)' : 'var(--text-secondary)' }}
-                        >
-                            Se connecter
-                        </button>
+                    <div>
+                        <label className="label-mini">Mot de passe</label>
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            className="editorial-input"
+                            placeholder="••••••••"
+                            required
+                        />
                     </div>
 
-                    {/* Form */}
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {!isLogin && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
+                            <input type="checkbox" required style={{ width: '1rem', height: '1rem', accentColor: 'var(--color-primary)' }} />
+                            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                                J'accepte les conditions d'utilisation et la politique de confidentialité.
+                            </span>
+                        </div>
+                    )}
 
-                        {error && (
-                            <div style={{ padding: '1rem', backgroundColor: '#ffebee', color: 'var(--color-vogue-red)', border: '1px solid var(--color-vogue-red)', borderRadius: '4px', fontSize: '0.9rem' }}>
-                                {error}
-                            </div>
-                        )}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="btn btn-primary"
+                        style={{ width: '100%', padding: '1.25rem' }}
+                    >
+                        {loading ? 'Traitement...' : isLogin ? 'Se connecter' : 'Créer un compte'}
+                    </button>
+                </form>
 
-                        {successMsg && (
-                            <div style={{ padding: '1rem', backgroundColor: '#e8f5e9', color: '#2e7d32', border: '1px solid #4caf50', borderRadius: '4px', fontSize: '0.9rem' }}>
-                                {successMsg}
-                            </div>
-                        )}
+                <p style={{ marginTop: '3rem', textAlign: 'center', fontSize: '0.625rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.2em', opacity: 0.6 }}>
+                    Édition Limitée • Paris
+                </p>
 
-                        {!isVerifying && !isLogin && (
-                            <>
-                                <input type="text" placeholder="Prénom" className="input-field" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-                                <input type="text" placeholder="Nom de famille" className="input-field" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-                            </>
-                        )}
-
-                        {!isVerifying && (
-                            <>
-                                <input type="email" placeholder="Adresse e-mail" className="input-field" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                                <input type="password" placeholder="Mot de passe" className="input-field" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                            </>
-                        )}
-
-                        {isVerifying && (
-                            <input
-                                type="text"
-                                placeholder="Code à 6 chiffres"
-                                className="input-field"
-                                value={verificationCode}
-                                onChange={(e) => setVerificationCode(e.target.value)}
-                                required
-                                maxLength={6}
-                            />
-                        )}
-
-                        {isLogin && !isVerifying && (
-                            <div style={{ textAlign: 'right', marginTop: '-0.5rem' }}>
-                                <a href="#" style={{ color: 'var(--color-vogue-red)', fontSize: '0.9rem' }}>Mot de passe oublié ?</a>
-                            </div>
-                        )}
-
-                        <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '1.2rem', marginTop: '1rem', opacity: loading ? 0.7 : 1 }} disabled={loading}>
-                            {loading ? 'Chargement...' : (isVerifying ? 'Vérifier le code' : (isLogin ? 'Se connecter' : 'Créer un compte'))}
-                        </button>
-                    </form>
-
+                {/* Aesthetic Detail */}
+                <div style={{ position: 'absolute', top: '15%', right: '-30px', opacity: 0.05, pointerEvents: 'none' }}>
+                    <span className="material-symbols-outlined" style={{ fontSize: '180px' }}>spa</span>
                 </div>
             </main>
-        </div>
+        </>
     );
 }

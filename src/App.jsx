@@ -10,12 +10,14 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/booking" element={<BookingPage />} />
-          <Route path="/registration" element={<RegistrationPage />} />
-          <Route path="/appointments" element={<AppointmentsPage />} />
-        </Routes>
+        <div className="app-container">
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/booking" element={<BookingPage />} />
+            <Route path="/registration" element={<RegistrationPage />} />
+            <Route path="/appointments" element={<AppointmentsPage />} />
+          </Routes>
+        </div>
       </Router>
     </ThemeProvider>
   );

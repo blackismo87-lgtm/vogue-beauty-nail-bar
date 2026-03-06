@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ec1313",
+              "background-light": "#ffffff",
+              "background-dark": "#221010",
+            },
+            fontFamily: {
+              "display": ["Noto Serif", "serif"],
+              "sans": ["Noto Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .editorial-input {
+            border-top: 0;
+            border-left: 0;
+            border-right: 0;
+            border-bottom: 1px solid #e2e8f0;
+            border-radius: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .editorial-input:focus {
+            ring: 0;
+            outline: none;
+            border-bottom: 1px solid #ec1313;
+            box-shadow: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex h-screen max-w-[430px] mx-auto flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+<!-- Header / Logo Area -->
+<div class="flex flex-col items-center pt-16 pb-12 px-8">
+<h1 class="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 text-center uppercase">
+                Vogue Beauty<br/>Nail Bar
+            </h1>
+</div>
+<!-- Toggle Switcher -->
+<div class="flex px-10 mb-10">
+<div class="flex w-full items-center justify-between border-b border-slate-200 dark:border-slate-800">
+<button class="flex-1 pb-4 text-sm font-medium border-b-2 border-primary text-slate-900 dark:text-slate-100">
+                    S'inscrire
+                </button>
+<button class="flex-1 pb-4 text-sm font-medium border-b-2 border-transparent text-slate-400 hover:text-slate-600">
+                    Se connecter
+                </button>
+</div>
+</div>
+<!-- Form Section -->
+<div class="flex-1 px-10 space-y-8">
+<div class="flex flex-col">
+<label class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Prénom</label>
+<input class="editorial-input bg-transparent w-full font-display text-lg placeholder:text-slate-300 dark:placeholder:text-slate-700" placeholder="Prénom" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Nom de famille</label>
+<input class="editorial-input bg-transparent w-full font-display text-lg placeholder:text-slate-300 dark:placeholder:text-slate-700" placeholder="Nom de famille" type="text"/>
+</div>
+<div class="flex flex-col">
+<label class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Adresse e-mail</label>
+<input class="editorial-input bg-transparent w-full font-display text-lg placeholder:text-slate-300 dark:placeholder:text-slate-700" placeholder="votre@email.com" type="email"/>
+</div>
+<div class="flex flex-col">
+<label class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-1">Mot de passe</label>
+<input class="editorial-input bg-transparent w-full font-display text-lg placeholder:text-slate-300 dark:placeholder:text-slate-700" placeholder="••••••••" type="password"/>
+</div>
+<div class="flex items-center gap-3 pt-4">
+<input class="rounded border-slate-300 text-primary focus:ring-primary h-4 w-4" type="checkbox"/>
+<span class="text-xs text-slate-500 font-sans">J'accepte les conditions d'utilisation et la politique de confidentialité.</span>
+</div>
+</div>
+<!-- Action Button -->
+<div class="px-10 pb-12 pt-6">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-5 tracking-[0.2em] text-xs uppercase transition-colors duration-200">
+                Créer un compte
+            </button>
+<p class="mt-8 text-center text-[10px] text-slate-400 uppercase tracking-widest">
+                Édition Limitée • Paris
+            </p>
+</div>
+<!-- Aesthetic Background Detail (Optional) -->
+<div class="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-8xl">spa</span>
+</div>
+</div>
+</body></html>
