@@ -81,7 +81,6 @@ export default function LandingPage() {
                     <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                         <p className="label-mini">Prestations</p>
                         <h3 style={{ fontSize: '1.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Nos Services Exclusifs</h3>
-                        <div style={{ height: '4px', width: '48px', backgroundColor: 'var(--color-primary)', margin: '0.5rem auto 0' }}></div>
                     </div>
 
                     <div className="responsive-grid">

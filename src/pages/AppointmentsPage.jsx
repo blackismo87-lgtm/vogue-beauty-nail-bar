@@ -111,7 +111,6 @@ export default function AppointmentsPage() {
                                     </div>
 
                                     <div style={{
-                                        borderTop: '1px solid var(--border-color)',
                                         paddingTop: '1rem',
                                         color: 'var(--text-secondary)',
                                         fontSize: '0.875rem',
