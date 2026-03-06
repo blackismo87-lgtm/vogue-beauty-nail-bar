@@ -1,16 +1,40 @@
-# React + Vite
+# Vogue Beauty • Nail Bar & Spa (Paris)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the **Vogue Beauty** digital platform – a premium, editorial-inspired web application for a luxury nail bar and spa located in the heart of Paris (Avenue Montaigne).
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Luxury Branding**: A high-end, responsive design inspired by luxury fashion magazines.
+- **Interactive Booking Flow**: A seamless, multi-step appointment scheduler with a dynamic calendar.
+- **Inclusive Imagery**: Beautiful, custom-generated editorial photography featuring African characters, reflecting a modern and inclusive brand vision.
+- **Appointment Management**: Secure client space to view and manage (cancel) upcoming appointments.
+- **Responsive Layout**: Fluid experience optimized for Mobile, Tablet, and Desktop.
+- **Dark Mode Support**: Elegant theme transitions for a premium evening feel.
 
-## React Compiler
+## 🛠️ Technology Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: React 18 + Vite
+- **Styling**: Vanilla CSS (Premium Editorial System)
+- **Backend/Database**: InsForge (PostgreSQL via PostgREST)
+- **Authentication**: InsForge Auth (JWT)
+- **Deployment**: Vercel
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+2. **Run Development Server**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Build for Production**:
+   ```bash
+   npm run build
+   ```
+
+---
+*Created with passion for Vogue Beauty Montaigne.*
