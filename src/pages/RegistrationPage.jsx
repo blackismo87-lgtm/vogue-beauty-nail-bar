@@ -71,15 +71,15 @@ export default function RegistrationPage() {
 
         try {
             if (isLogin) {
-                const { error: signInError, data: { session: newSession } } = await insforge.auth.signInWithPassword({
+                const { error: signInError, data: authData } = await insforge.auth.signInWithPassword({
                     email: formData.email,
                     password: formData.password,
                 });
                 if (signInError) throw signInError;
-                setSession(newSession);
+                setSession(authData);
                 fetchUserData(formData.email);
             } else {
-                const { error: signUpError } = await insforge.auth.signUp({
+                const { error: signUpError, data: signUpData } = await insforge.auth.signUp({
                     email: formData.email,
                     password: formData.password,
                     options: {
@@ -90,8 +90,14 @@ export default function RegistrationPage() {
                     }
                 });
                 if (signUpError) throw signUpError;
-                setSuccess('Inscription réussie ! Vous pouvez maintenant vous connecter.');
-                setIsLogin(true);
+
+                if (signUpData?.accessToken) {
+                    setSession(signUpData);
+                    fetchUserData(formData.email);
+                } else {
+                    setSuccess('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+                    setIsLogin(true);
+                }
             }
         } catch (err) {
             setError(err.message || "Une erreur est survenue");
@@ -117,7 +123,7 @@ export default function RegistrationPage() {
                             <div>
                                 <p className="label-mini" style={{ color: 'var(--color-primary)' }}>Bienvenue</p>
                                 <h1 style={{ fontSize: '1.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                                    {session.user.user_metadata?.first_name || 'Élégance'} {session.user.user_metadata?.last_name || 'Vogue'}
+                                    {session.user.metadata?.first_name || 'Élégance'} {session.user.metadata?.last_name || 'Vogue'}
                                 </h1>
                             </div>
                             <button onClick={handleLogout} className="btn" style={{ border: '1px solid var(--border-color)', fontSize: '0.75rem', padding: '0.5rem 1rem' }}>
