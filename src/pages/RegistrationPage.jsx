@@ -164,7 +164,9 @@ export default function RegistrationPage() {
                                                     </p>
                                                 </div>
                                                 <div style={{ textAlign: 'right' }}>
-                                                    <p style={{ fontWeight: 800, color: 'var(--color-primary)' }}>{apt.service_price.toLocaleString()} F</p>
+                                                    <p style={{ fontWeight: 800, color: 'var(--color-primary)' }}>
+                                                        {apt.service_price?.replace('€', '').replace('F', '').trim()} F
+                                                    </p>
                                                     <span style={{ fontSize: '0.625rem', textTransform: 'uppercase' }}>{apt.status === 'confirmed' ? 'Passé' : apt.status}</span>
                                                 </div>
                                             </div>
@@ -178,13 +180,13 @@ export default function RegistrationPage() {
                                 <h3 style={{ fontSize: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Offres Exclusive</h3>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                     {promotions.map(promo => (
-                                        <div key={promo.id} className="vogue-card" style={{ padding: 0, overflow: 'hidden' }}>
-                                            <div style={{ height: '120px', width: '100%' }}>
-                                                <img src={promo.image_url} alt={promo.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <div key={promo.id} className="vogue-card" style={{ padding: '1.5rem', borderLeft: '4px solid var(--color-primary)' }}>
+                                            <div style={{ marginBottom: '0.5rem' }}>
+                                                <h4 style={{ fontSize: '1.1rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{promo.title}</h4>
+                                                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>{promo.description}</p>
                                             </div>
-                                            <div style={{ padding: '1rem' }}>
-                                                <h4 style={{ fontSize: '1rem', marginBottom: '0.25rem' }}>{promo.title}</h4>
-                                                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{promo.description}</p>
+                                            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                                <span style={{ fontSize: '0.625rem', textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.5 }}>Offre Exclusive</span>
                                             </div>
                                         </div>
                                     ))}
