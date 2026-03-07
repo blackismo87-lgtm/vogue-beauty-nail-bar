@@ -60,6 +60,10 @@ a {
   color: inherit;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
@@ -68,6 +72,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.3s ease;
+  overflow-x: hidden;
 }
 
 /* Material Symbols */
@@ -110,7 +115,7 @@ h4 {
   border-radius: var(--radius-full);
   font-weight: 700;
   font-size: 0.875rem;
-  transition: all 0.2s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   border: none;
   text-transform: uppercase;
   letter-spacing: 0.15em;
@@ -125,12 +130,34 @@ h4 {
 
 .btn-primary:hover {
   background-color: #d10f0f;
-  transform: translateY(-1px);
-  box-shadow: 0 12px 28px rgba(236, 19, 19, 0.35);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 32px rgba(236, 19, 19, 0.35);
 }
 
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: scale(0.96);
+}
+
+/* Vogue Card Enhancements */
+.vogue-card {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.vogue-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-primary);
+  border-color: var(--color-primary);
+}
+
+.vogue-card img {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.vogue-card:hover img {
+  transform: scale(1.1);
 }
 
 /* Forms - Editorial Style */

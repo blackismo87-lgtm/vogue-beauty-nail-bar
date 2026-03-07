@@ -106,7 +106,7 @@ export default function AppointmentsPage() {
                                             <h3 style={{ fontSize: '1.125rem', fontWeight: 700 }}>{apt.service_name}</h3>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
-                                            <p style={{ fontWeight: 800, fontSize: '1.25rem' }}>{apt.service_price}{typeof apt.service_price === 'number' ? '€' : ''}</p>
+                                            <p style={{ fontWeight: 800, fontSize: '1.25rem' }}>{apt.service_price.toLocaleString()} F</p>
                                         </div>
                                     </div>
 
@@ -128,7 +128,7 @@ export default function AppointmentsPage() {
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                             <span className="material-symbols-outlined" style={{ fontSize: '1.25rem' }}>location_on</span>
-                                            <span>Vogue Beauty Montaigne, Paris</span>
+                                            <span>Vogue Sotuba, Bamako</span>
                                         </div>
                                     </div>
 

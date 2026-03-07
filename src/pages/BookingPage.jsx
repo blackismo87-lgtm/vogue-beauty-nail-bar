@@ -8,10 +8,12 @@ import facialImg from '../assets/images/facial.png';
 import massageImg from '../assets/images/massage.png';
 
 const SERVICES = [
-    { id: 1, name: 'Manucure & Pédicure Royale', price: 85, duration: '90 min', image: pedicureImg },
-    { id: 2, name: 'Soin Visage Éclat Pur', price: 65, duration: '60 min', image: facialImg },
-    { id: 3, name: 'Massage Signature Vogue', price: 120, duration: '75 min', image: massageImg },
-    { id: 4, name: 'Pose de Vernis Semi-Permanent', price: 45, duration: '45 min', image: manicureImg }
+    { id: 1, name: 'Manucure Orientale', price: 7500, duration: '45 min', image: manicureImg },
+    { id: 2, name: 'Pédicure Zen', price: 12000, duration: '60 min', image: pedicureImg },
+    { id: 3, name: 'Soin Visage Complet', price: 20000, duration: '60 min', image: facialImg },
+    { id: 4, name: 'Massage Relaxant', price: 20000, duration: '60 min', image: massageImg },
+    { id: 5, name: 'Gommage Clarifiant', price: 15000, duration: '45 min', image: massageImg },
+    { id: 6, name: 'Vernis Permanent', price: 10000, duration: '30 min', image: manicureImg }
 ];
 
 const TIME_SLOTS = [
@@ -186,7 +188,7 @@ export default function BookingPage() {
                                             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{s.duration}</p>
                                         </div>
                                         <div style={{ textAlign: 'right' }}>
-                                            <p style={{ fontWeight: 800, fontSize: '1.125rem' }}>{s.price}€</p>
+                                            <p style={{ fontWeight: 800, fontSize: '1.125rem' }}>{s.price.toLocaleString()} F</p>
                                             {selectedService?.id === s.id && <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)', fontSize: '1.25rem' }}>check_circle</span>}
                                         </div>
                                     </div>
@@ -309,7 +311,7 @@ export default function BookingPage() {
 
                                 <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <span style={{ fontWeight: 800, fontSize: '1.25rem' }}>Total</span>
-                                    <span style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--color-primary)' }}>{selectedService.price}€</span>
+                                    <span style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--color-primary)' }}>{selectedService.price.toLocaleString()} F</span>
                                 </div>
                             </div>
 
@@ -340,7 +342,7 @@ export default function BookingPage() {
                         <div>
                             <p style={{ fontSize: '0.625rem', textTransform: 'uppercase', opacity: 0.6, letterSpacing: '0.1em' }}>Récapitulatif</p>
                             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-                                <span style={{ fontWeight: 800, fontSize: '1.125rem' }}>{selectedService.price}€</span>
+                                <span style={{ fontWeight: 800, fontSize: '1.125rem' }}>{selectedService.price.toLocaleString()} F</span>
                                 <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>/ {selectedService.name}</span>
                             </div>
                         </div>
