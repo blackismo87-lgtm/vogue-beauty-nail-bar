@@ -68,11 +68,6 @@ export default function BookingPage() {
     }, [weekOffset]);
 
     const handleCreateBooking = async () => {
-        if (!user) {
-            navigate('/register');
-            return;
-        }
-
         setLoading(true);
         setError('');
 
@@ -100,13 +95,13 @@ export default function BookingPage() {
 📞 Tél : ${formData.phone}`;
 
             const whatsappUrl = `https://wa.me/22369565497?text=${encodeURIComponent(message)}`;
-            window.location.href = whatsappUrl;
+            window.open(whatsappUrl, '_blank');
             setSuccess(true);
         } catch (err) {
             setError("Une erreur est survenue. Vous pouvez quand même nous contacter sur WhatsApp.");
             // Redirection même en cas d'erreur BDD pour ne pas bloquer l'utilisateur
             const message = `Bonjour, je souhaite réserver : ${selectedService.name} le ${selectedDate.toLocaleDateString('fr-FR')} à ${selectedTime}. Client: ${formData.firstName} ${formData.lastName}, Tél: ${formData.phone}`;
-            window.location.href = `https://wa.me/22369565497?text=${encodeURIComponent(message)}`;
+            window.open(`https://wa.me/22369565497?text=${encodeURIComponent(message)}`, '_blank');
         } finally {
             setLoading(false);
         }
