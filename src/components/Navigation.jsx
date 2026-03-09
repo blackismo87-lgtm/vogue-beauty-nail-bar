@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { insforge } from '../lib/insforge';
+import { useCart } from './CartContext';
 
 export default function Navigation() {
   const navigate = useNavigate();
   const location = useLocation();
   const [session, setSession] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
+  const { cartCount } = useCart();
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -50,9 +52,29 @@ export default function Navigation() {
           <Link to="/" style={{ color: 'inherit' }}>Vogue Beauty</Link>
         </h1>
 
-        <div style={{ width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+        <div style={{ width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', position: 'relative' }}>
           <button style={{ background: 'none', border: 'none', display: 'flex', color: 'inherit', cursor: 'pointer' }}>
             <span className="material-symbols-outlined">shopping_bag</span>
+            {cartCount > 0 && (
+              <span style={{
+                position: 'absolute',
+                top: '-5px',
+                right: '-5px',
+                backgroundColor: 'var(--color-primary)',
+                color: 'white',
+                borderRadius: '50%',
+                width: '18px',
+                height: '18px',
+                fontSize: '10px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 'bold',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+              }}>
+                {cartCount}
+              </span>
+            )}
           </button>
         </div>
 

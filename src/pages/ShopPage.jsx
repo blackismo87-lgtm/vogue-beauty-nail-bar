@@ -1,5 +1,5 @@
-import React from 'react';
 import Navigation from '../components/Navigation';
+import { useCart } from '../components/CartContext';
 
 const products = [
     {
@@ -33,6 +33,7 @@ const products = [
 ];
 
 export default function ShopPage() {
+    const { addToCart } = useCart();
     return (
         <div className="page-container">
             <Navigation />
@@ -84,7 +85,11 @@ export default function ShopPage() {
                                     <span style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-primary)' }}>
                                         {product.price.toFixed(2)}€
                                     </span>
-                                    <button className="button-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}>
+                                    <button
+                                        className="button-primary"
+                                        style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}
+                                        onClick={() => addToCart(product)}
+                                    >
                                         Ajouter au panier
                                     </button>
                                 </div>
