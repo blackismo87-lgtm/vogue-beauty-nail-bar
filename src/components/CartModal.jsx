@@ -3,6 +3,11 @@ import { useCart } from './CartContext';
 
 export default function CartModal({ isOpen, onClose }) {
     const { cartItems, removeFromCart, clearCart, cartCount } = useCart();
+    const [formData, setFormData] = React.useState({
+        firstName: '',
+        lastName: '',
+        phone: ''
+    });
 
     if (!isOpen) return null;
 
@@ -53,14 +58,54 @@ export default function CartModal({ isOpen, onClose }) {
 
                 {cartItems.length > 0 && (
                     <div className="cart-total-section">
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Vos Coordonnées</h3>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <input
+                                    type="text"
+                                    className="editorial-input"
+                                    placeholder="Prénom"
+                                    value={formData.firstName}
+                                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                                />
+                                <input
+                                    type="text"
+                                    className="editorial-input"
+                                    placeholder="Nom"
+                                    value={formData.lastName}
+                                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                                />
+                                <input
+                                    type="tel"
+                                    className="editorial-input"
+                                    placeholder="Téléphone"
+                                    value={formData.phone}
+                                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                />
+                            </div>
+                        </div>
+
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
                             <span style={{ fontWeight: 600 }}>Total</span>
-                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>{total.toFixed(2)}€</span>
+                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>{total.toLocaleString()} F</span>
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                            <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => alert('Paiement bientôt disponible !')}>
-                                Passer à la caisse
+                            <button
+                                className="btn btn-primary"
+                                style={{ width: '100%', opacity: (!formData.firstName || !formData.phone) ? 0.5 : 1 }}
+                                disabled={!formData.firstName || !formData.phone}
+                                onClick={() => {
+                                    const itemsList = cartItems.map(item => `- ${item.name} (x${item.quantity})`).join('\n');
+                                    const message = `Bonjour Vogue Beauty, je souhaite commander les articles suivants :
+${itemsList}
+💰 Total : ${total.toLocaleString()} F
+👤 Client : ${formData.firstName} ${formData.lastName}
+📞 Tél : ${formData.phone}`;
+                                    window.location.href = `https://wa.me/22379282800?text=${encodeURIComponent(message)}`;
+                                }}
+                            >
+                                Commander sur WhatsApp
                             </button>
                             <button
                                 onClick={clearCart}

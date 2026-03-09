@@ -31,6 +31,11 @@ export default function BookingPage() {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
     const [weekOffset, setWeekOffset] = useState(0);
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        phone: ''
+    });
 
     useEffect(() => {
         const checkSession = async () => {
@@ -72,26 +77,36 @@ export default function BookingPage() {
         setError('');
 
         try {
-            const { error: dbError } = await insforge.database
+            // Optionnel: On peut toujours sauvegarder en BDD si on veut garder une trace interne
+            await insforge.database
                 .from('appointments')
                 .insert([
                     {
-                        user_email: user.email,
-                        user_name: user.user_metadata?.first_name
-                            ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ''}`
-                            : user.email,
+                        user_name: `${formData.firstName} ${formData.lastName}`,
+                        user_phone: formData.phone,
                         service_name: selectedService.name,
                         service_price: selectedService.price,
                         appointment_date: selectedDate.toISOString().split('T')[0],
                         appointment_time: selectedTime,
-                        status: 'confirmed'
+                        status: 'pending'
                     }
                 ]);
 
-            if (dbError) throw dbError;
+            const message = `Bonjour Vogue Beauty, je souhaite réserver une prestation :
+📌 *${selectedService.name}*
+📅 Date : ${selectedDate.toLocaleDateString('fr-FR')}
+🕒 Heure : ${selectedTime}
+👤 Client : ${formData.firstName} ${formData.lastName}
+📞 Tél : ${formData.phone}`;
+
+            const whatsappUrl = `https://wa.me/22379282800?text=${encodeURIComponent(message)}`;
+            window.location.href = whatsappUrl;
             setSuccess(true);
         } catch (err) {
-            setError(err.message || "Une erreur est survenue lors de la réservation.");
+            setError("Une erreur est survenue. Vous pouvez quand même nous contacter sur WhatsApp.");
+            // Redirection même en cas d'erreur BDD pour ne pas bloquer l'utilisateur
+            const message = `Bonjour, je souhaite réserver : ${selectedService.name} le ${selectedDate.toLocaleDateString('fr-FR')} à ${selectedTime}. Client: ${formData.firstName} ${formData.lastName}, Tél: ${formData.phone}`;
+            window.location.href = `https://wa.me/22379282800?text=${encodeURIComponent(message)}`;
         } finally {
             setLoading(false);
         }
@@ -288,33 +303,47 @@ export default function BookingPage() {
 
                     {step === 3 && (
                         <div className="animate-fade-in" style={{ textAlign: 'center' }}>
-                            <h2 style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>Finalisez votre visite</h2>
-
-                            <div className="vogue-card" style={{ padding: '2rem', textAlign: 'left', position: 'relative', overflow: 'hidden', maxWidth: '500px', margin: '0 auto' }}>
-                                <div style={{ position: 'absolute', top: '-20px', right: '-20px', opacity: 0.05 }}>
-                                    <span className="material-symbols-outlined" style={{ fontSize: '120px' }}>content_paste_search</span>
+                            <div className="vogue-card" style={{ padding: '2rem', textAlign: 'left', maxWidth: '500px', margin: '0 auto' }}>
+                                <h3 style={{ marginBottom: '1.5rem', fontSize: '1.25rem' }}>Vos Coordonnées</h3>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                    <div>
+                                        <label className="label-mini">Prénom</label>
+                                        <input
+                                            type="text"
+                                            className="editorial-input"
+                                            placeholder="Ex: Awa"
+                                            value={formData.firstName}
+                                            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="label-mini">Nom</label>
+                                        <input
+                                            type="text"
+                                            className="editorial-input"
+                                            placeholder="Ex: Diarra"
+                                            value={formData.lastName}
+                                            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="label-mini">Numéro de Téléphone</label>
+                                        <input
+                                            type="tel"
+                                            className="editorial-input"
+                                            placeholder="Ex: +223 00 00 00 00"
+                                            value={formData.phone}
+                                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                        />
+                                    </div>
                                 </div>
 
-                                <div style={{ marginBottom: '1.5rem' }}>
-                                    <p className="label-mini">Prestation</p>
-                                    <p style={{ fontSize: '1.25rem', fontWeight: 700 }}>{selectedService.name}</p>
-                                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Durée: {selectedService.duration}</p>
-                                </div>
-
-                                <div style={{ marginBottom: '1.5rem' }}>
-                                    <p className="label-mini">Date & Heure</p>
-                                    <p style={{ fontSize: '1.125rem', fontWeight: 700 }}>
-                                        {selectedDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
-                                    </p>
-                                    <p style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-primary)' }}>à {selectedTime}</p>
-                                </div>
-
-                                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span style={{ fontWeight: 800, fontSize: '1.25rem' }}>Total</span>
-                                    <span style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--color-primary)' }}>{selectedService.price.toLocaleString()} F</span>
+                                <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
+                                    <p className="label-mini">Récapitulatif</p>
+                                    <p style={{ fontWeight: 700 }}>{selectedService.name} - {selectedService.price.toLocaleString()} F</p>
+                                    <p style={{ fontSize: '0.875rem', opacity: 0.8 }}>Le {selectedDate.toLocaleDateString('fr-FR')} à {selectedTime}</p>
                                 </div>
                             </div>
-
                             {error && <p style={{ color: 'var(--color-primary)', marginTop: '1rem', fontSize: '0.875rem' }}>{error}</p>}
                         </div>
                     )}
@@ -366,11 +395,11 @@ export default function BookingPage() {
                         ) : (
                             <button
                                 onClick={handleCreateBooking}
-                                disabled={loading}
+                                disabled={loading || !formData.firstName || !formData.phone}
                                 className="btn btn-primary"
-                                style={{ padding: '0.75rem 1.5rem', borderRadius: '0.75rem' }}
+                                style={{ padding: '0.75rem 1.5rem', borderRadius: '0.75rem', opacity: (loading || !formData.firstName || !formData.phone) ? 0.5 : 1 }}
                             >
-                                {loading ? 'Traitement...' : 'Confirmer'}
+                                {loading ? 'Envoi...' : 'Confirmer sur WhatsApp'}
                             </button>
                         )}
                     </div>
