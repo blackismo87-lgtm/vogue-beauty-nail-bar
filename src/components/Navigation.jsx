@@ -73,7 +73,7 @@ export default function Navigation() {
             <Link to="/booking" onClick={() => setShowMenu(false)} style={{ fontStyle: 'italic', fontSize: '1.125rem' }}>Réserver un soin</Link>
             {session ? (
               <>
-                <Link to="/appointments" onClick={() => setShowMenu(false)} style={{ fontStyle: 'italic', fontSize: '1.125rem' }}>Mes Rendez-vous</Link>
+                <Link to="/shop" onClick={() => setShowMenu(false)} style={{ fontStyle: 'italic', fontSize: '1.125rem' }}>SHOP</Link>
                 <button onClick={handleLogout} style={{ background: 'none', border: 'none', textAlign: 'left', fontStyle: 'italic', fontSize: '1.125rem', color: 'var(--color-primary)', cursor: 'pointer' }}>Se déconnecter</button>
               </>
             ) : (
@@ -128,16 +128,16 @@ export default function Navigation() {
             <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Réserver</span>
           </Link>
 
-          <Link to="/appointments" style={{
+          <Link to="/shop" style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             gap: '4px',
-            color: isActive('/appointments') ? 'var(--color-primary)' : 'var(--text-muted)',
+            color: isActive('/shop') ? 'var(--color-primary)' : 'var(--text-muted)',
             flex: 1
           }}>
-            <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/appointments') ? "'FILL' 1" : "'FILL' 0" }}>schedule</span>
-            <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Mes RDV</span>
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/shop') ? "'FILL' 1" : "'FILL' 0" }}>shopping_bag</span>
+            <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>SHOP</span>
           </Link>
 
           <Link to="/registration" style={{
