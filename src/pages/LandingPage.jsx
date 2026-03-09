@@ -153,7 +153,7 @@ export default function LandingPage() {
                         <div className="vogue-card" style={{ padding: '2rem', backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
                             <span className="material-symbols-outlined" style={{ fontSize: '32px', color: 'var(--color-primary-pink)', marginBottom: '1rem' }}>call</span>
                             <h3 style={{ marginBottom: '0.5rem', fontStyle: 'normal' }}>Contact</h3>
-                            <p style={{ opacity: 0.8, fontSize: '0.9rem' }}>+223 79 28 28 00<br />@vogue_beauty_bar</p>
+                            <p style={{ opacity: 0.8, fontSize: '0.9rem' }}>+223 69 56 54 97<br />@vogue_beauty_bar</p>
                         </div>
                     </div>
                 </section>

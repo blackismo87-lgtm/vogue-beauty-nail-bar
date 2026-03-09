@@ -102,7 +102,7 @@ ${itemsList}
 💰 Total : ${total.toLocaleString()} F
 👤 Client : ${formData.firstName} ${formData.lastName}
 📞 Tél : ${formData.phone}`;
-                                    window.location.href = `https://wa.me/22379282800?text=${encodeURIComponent(message)}`;
+                                    window.location.href = `https://wa.me/22369565497?text=${encodeURIComponent(message)}`;
                                 }}
                             >
                                 Commander sur WhatsApp
