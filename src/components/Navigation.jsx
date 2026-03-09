@@ -77,7 +77,7 @@ export default function Navigation() {
                 <button onClick={handleLogout} style={{ background: 'none', border: 'none', textAlign: 'left', fontStyle: 'italic', fontSize: '1.125rem', color: 'var(--color-primary)', cursor: 'pointer' }}>Se déconnecter</button>
               </>
             ) : (
-              <Link to="/registration" onClick={() => setShowMenu(false)} style={{ fontStyle: 'italic', fontSize: '1.125rem' }}>Espace Client</Link>
+              <Link to="/promotions" onClick={() => setShowMenu(false)} style={{ fontStyle: 'italic', fontSize: '1.125rem' }}>Promotions</Link>
             )}
           </div>
         )}
@@ -140,16 +140,16 @@ export default function Navigation() {
             <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>SHOP</span>
           </Link>
 
-          <Link to="/registration" style={{
+          <Link to="/promotions" style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             gap: '4px',
-            color: isActive('/registration') ? 'var(--color-primary)' : 'var(--text-muted)',
+            color: isActive('/promotions') ? 'var(--color-primary)' : 'var(--text-muted)',
             flex: 1
           }}>
-            <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/registration') ? "'FILL' 1" : "'FILL' 0" }}>person</span>
-            <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Profil</span>
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: isActive('/promotions') ? "'FILL' 1" : "'FILL' 0" }}>sell</span>
+            <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Promotion</span>
           </Link>
         </div>
       </nav>
