@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { insforge } from '../lib/insforge';
 import { useCart } from './CartContext';
+import CartModal from './CartModal';
 
 export default function Navigation() {
   const navigate = useNavigate();
   const location = useLocation();
   const [session, setSession] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const { cartCount } = useCart();
 
   useEffect(() => {
@@ -53,7 +55,10 @@ export default function Navigation() {
         </h1>
 
         <div style={{ width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', position: 'relative' }}>
-          <button style={{ background: 'none', border: 'none', display: 'flex', color: 'inherit', cursor: 'pointer' }}>
+          <button
+            onClick={() => setIsCartOpen(true)}
+            style={{ background: 'none', border: 'none', display: 'flex', color: 'inherit', cursor: 'pointer' }}
+          >
             <span className="material-symbols-outlined">shopping_bag</span>
             {cartCount > 0 && (
               <span style={{
@@ -178,6 +183,8 @@ export default function Navigation() {
 
       {/* Spacer to fix bottom nav covering content */}
       <div style={{ height: '80px' }}></div>
+
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 }

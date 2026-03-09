@@ -259,3 +259,66 @@ h4 {
     font-size: 18px;
   }
 }
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  background-color: var(--bg-card);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+.cart-item-row {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  align-items: center;
+}
+
+.cart-item-info {
+  flex: 1;
+}
+
+.cart-item-info h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  font-style: normal;
+}
+
+.cart-item-info p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.cart-total-section {
+  padding: 2rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-glass);
+  margin-top: auto;
+}

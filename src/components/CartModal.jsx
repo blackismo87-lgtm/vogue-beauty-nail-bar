@@ -1,0 +1,77 @@
+import React from 'react';
+import { useCart } from './CartContext';
+
+export default function CartModal({ isOpen, onClose }) {
+    const { cartItems, removeFromCart, clearCart, cartCount } = useCart();
+
+    if (!isOpen) return null;
+
+    const total = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <header style={{
+                    padding: '1.5rem',
+                    borderBottom: '1px solid var(--border-color)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}>
+                    <h2 style={{ fontSize: '1.5rem', margin: 0 }}>Votre Panier ({cartCount})</h2>
+                    <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                        <span className="material-symbols-outlined">close</span>
+                    </button>
+                </header>
+
+                <div style={{ flex: 1, overflowY: 'auto' }}>
+                    {cartItems.length === 0 ? (
+                        <div style={{ padding: '3rem 2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                            <span className="material-symbols-outlined" style={{ fontSize: '48px', marginBottom: '1rem' }}>shopping_basket</span>
+                            <p>Votre panier est vide</p>
+                        </div>
+                    ) : (
+                        cartItems.map(item => (
+                            <div key={item.id} className="cart-item-row">
+                                <div style={{ width: '60px', height: '60px', borderRadius: '8px', overflow: 'hidden' }}>
+                                    <img src={item.image} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                </div>
+                                <div className="cart-item-info">
+                                    <h4>{item.name}</h4>
+                                    <p>{item.quantity} x {item.price.toFixed(2)}€</p>
+                                </div>
+                                <button
+                                    onClick={() => removeFromCart(item.id)}
+                                    style={{ background: 'none', border: 'none', color: 'var(--color-primary)', cursor: 'pointer' }}
+                                >
+                                    <span className="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {cartItems.length > 0 && (
+                    <div className="cart-total-section">
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                            <span style={{ fontWeight: 600 }}>Total</span>
+                            <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>{total.toFixed(2)}€</span>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <button className="btn btn-primary" style={{ width: '100%' }} onClick={() => alert('Paiement bientôt disponible !')}>
+                                Passer à la caisse
+                            </button>
+                            <button
+                                onClick={clearCart}
+                                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '0.875rem', cursor: 'pointer' }}
+                            >
+                                Vider le panier
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
